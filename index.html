@@ -36,10 +36,13 @@
         min-height: calc(100vh - 20px);
         padding: 50px 20px;
         padding-top: 100px;
-        display: flex;
+        background-image: url(https://images.pexels.com/photos/735911/pexels-photo-735911.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1);
+        background-size: contain;
+         backdrop-filter: brightness(0.5);
+        /* display: flex;
         background-image: linear-gradient(-20deg, #ffc107 0%, #f44336 100%);
         display: flex;
-        background-image: linear-gradient(-20deg, #ffc107 0%, #f44336 100%);
+        background-image: linear-gradient(-20deg, #ffc107 0%, #f44336 100%); */
     }
 
     @media screen and (max-width: 768px) {
@@ -51,6 +54,7 @@
     }
 
     .profile-card {
+        padding-top: 100px;
         width: 100%;
         min-height: 460px;
         margin: auto;
@@ -421,8 +425,8 @@
     }
 
     .profile-card__overlay {
-        width: 100%;
-        height: 100%;
+        width: 10%;
+        height: 10%;
         position: absolute;
         top: 0;
         left: 0;
@@ -432,6 +436,34 @@
         border-radius: 12px;
         transition: all 0.3s;
     }
+    .ghost{
+        position: absolute;
+        left: 200%;
+        mix-blend-mode: exclusion;
+        animation: ghost 6.5s ease-in-out infinite;
+    }
+    @keyframes ghost {
+        to{
+            left: -100px;
+        }
+    }
+    .st0{
+        stroke: white;
+        stroke-width: 3px;
+        stroke-dasharray: 1800;
+        animation: effectText 5s ease-in-out infinite alternate;
+    }
+    @keyframes effectText  {
+        from{
+            fill: transparent;
+            stroke-dashoffset: 1800;
+
+        }to{
+            fill: white;
+            stroke-dashoffset: 0;
+        }
+        
+    }
 </style>
 <div class="wrapper">
     <div class="profile-card js-profile-card">
@@ -439,17 +471,17 @@
             <img src="https://scontent.fsgn2-4.fna.fbcdn.net/v/t39.30808-6/326365691_1142943829697919_6166626198363592809_n.jpg?stp=cp6_dst-jpg&_nc_cat=109&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=KKoh51hnhhUAX-KTlkx&_nc_ht=scontent.fsgn2-4.fna&oh=00_AfBlaK_K2VovlZTjUO3HZvPhMjSNjqCIe3Gp0aaKPSN1Cg&oe=640EDB52"
                 alt="profile card">
         </div>
-
+        
         <div class="profile-card__cnt js-profile-cnt">
             <div class="profile-card__name">Dao Min Tam</div>
-            <div class="profile-card__txt">Developer from <strong>Binh Duong, VN</strong></div>
+            <div class="profile-card__txt">!!!!!!!!! <strong></strong></div>
             <div class="profile-card-loc">
                 <span class="profile-card-loc__icon">
                     <svg class="icon">
                         <use xlink:href="#icon-location"></use>
                     </svg>
                 </span>
-
+                    <img src="https://e7.pngegg.com/pngimages/61/844/png-clipart-ghost-halloween-halloween-ghost-white-ghost-illustration-marine-mammal-white-thumbnail.png" class="ghost"> 
                 <span class="profile-card-loc__txt">
                     Thu Dau Mot, Binh Duong
                 </span>
