@@ -29,7 +29,11 @@
 			<h1 class="text-3xl font-bold pt-8 lg:pt-0">Minh Tam</h1>
 			<div class="mx-auto lg:mx-0 w-4/5 pt-3 border-b-2 border-green-500 opacity-25"></div>
 			<p class="text-3xl font-bold flex items-center justify-center lg:justify-start mt-4 mb-4">
-				<img src="img/heart.png"></img>
+				<div class="pt-2 pb-2">
+					<button id="heart-btn">
+						<img src="img/heart.png" >
+					  </button>
+				</div>
 				<h2 id="text" class="wow fadeInUp animated mb-10" data-wow-delay="0.7s">
 				</h2></p>
 				<div class="flex flex-wrap items-center justify-center">
@@ -54,6 +58,7 @@
 					
 			<p class="pt-8 text-sm">You say you love rain</p>
 			But you open your umbrella.<p class="pt-8 text-sm">You say you love the sun</p>But you find a shadow spot.</p>
+			<p class="pt-8 text-sm">You say you love wind</p>But you close your windows.</p>
 
 			<div class="pt-12 pb-8">
 				<button id="heart-btn">
@@ -142,12 +147,13 @@
 			.pauseFor(400)
 			.start();
 	</script>
-	
 </body>
 
 </html>
 <style>
-	
+
+  
+
 	.link:hover img {
   animation: bounce 0.5s;
   animation-iteration-count: infinite;
@@ -181,4 +187,5 @@
 heartBtn.addEventListener('click', function() {
   heartBtn.classList.toggle('clicked');
 });
+
 </script>
