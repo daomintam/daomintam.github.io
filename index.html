@@ -100,6 +100,7 @@
 						<button id="btnHeart">
 							<img src="img/bh.png">
 						</button>
+						<p style="font-family: Georgia, serif; font-size: 9pt;">Click me!</p>
 					</div>
 				</div>
 
@@ -137,9 +138,9 @@
 
 	</div>
 
-	<script src="popper.js"></script>
+	<script src="js/popper.js"></script>
 	<!-- Change theme -->
-	<script src="min.js"></script>
+	<script src="js/min.js"></script>
 
 	<script>
 		tippy('.link', {
@@ -153,6 +154,7 @@
 		const phoneIcon = document.getElementById('ic_phone');
 		const locationIcon = document.getElementById('ic_location');
 		const name = document.getElementById('name');
+		const btnHeart = document.getElementById('btnHeart');
 		toggle.addEventListener('click', () => {
 
 			if (body.classList.contains('text-gray-900')) {
@@ -166,6 +168,8 @@
 				locationIcon.style.fill = 'white';
 				name.classList.remove('light');
 				name.classList.add('dark');
+				btnHeart.removeAttribute('src','img/bh.png');
+				btnHeart.querySelector('img').setAttribute('src','img/wh.png');
 
 			} else {
 				toggle.innerHTML = "🌙";
@@ -178,11 +182,13 @@
 				locationIcon.style.fill = '';
 				name.classList.remove('dark');
 				name.classList.add('light');
+				btnHeart.removeAttribute('src','img/wh.png');
+				btnHeart.querySelector('img').setAttribute('src','img/bh.png');
 			}
 		});
 
 	</script>
-	<script src="core.js"></script>
+	<script src="js/core.js"></script>
 	<script>
 		var app = document.getElementById('text');
 		var typewriter = new Typewriter(app, {

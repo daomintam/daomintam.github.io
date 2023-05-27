@@ -5,7 +5,7 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<title>MT</title>
+	<title>Green Home</title>
 	<meta name="description" content="">
 	<meta name="keywords" content="">
 	<meta name="author" content="">
@@ -31,7 +31,6 @@
 						.txtelegantshadow {
 					  text-align: center;
 					  font-family: "Avant Garde", Avantgarde, "Century Gothic", CenturyGothic, "AppleGothic", sans-serif;
-					  font-size: 80px;
 					  height: 100px;
 					  padding-top: 40px;
 					  color: #ffffff;
@@ -40,7 +39,7 @@
 					  text-shadow: 0 -1px 0 #fff, 0 1px 0 #2e2e2e, 0 2px 0 #2c2c2c, 0 3px 0 #2a2a2a, 0 4px 0 #282828, 0 5px 0 #262626, 0 6px 0 #242424, 0 7px 0 #222, 0 8px 0 #202020, 0 9px 0 #1e1e1e, 0 10px 0 #1c1c1c, 0 11px 0 #1a1a1a, 0 12px 0 #181818, 0 13px 0 #161616, 0 14px 0 #141414, 0 15px 0 #121212, 0 22px 30px rgba(0, 0, 0, 0.9);
 					}
 					</style>
-					<h2 id="text" class="wow fadeInUp animated mb-10 mt-40" data-wow-delay="0.7s"></h2>
+					<h2 id="text" style="color: #003621;" class="wow fadeInUp animated mb-10 mt-40" data-wow-delay="0.7s"></h2>
 				</div>
 
 				</p>
@@ -116,9 +115,9 @@
 
 	</div>
 
-	<script src="popper.js"></script>
+	<script src="js/popper.js"></script>
 	<!-- Change theme -->
-	<script src="min.js"></script>
+	<script src="js/min.js"></script>
 
 	<script>
 		tippy('.link', {
@@ -128,7 +127,6 @@
 		const toggle = document.querySelector('.js-change-theme');
 		const body = document.querySelector('body');
 		const profile = document.getElementById('profile');
-		const emailIcon = document.getElementById('ic_email');
 		const phoneIcon = document.getElementById('ic_phone');
 		const locationIcon = document.getElementById('ic_location');
 		const name = document.getElementById('name');
@@ -140,7 +138,6 @@
 				body.classList.add('text-gray-100');
 				profile.classList.remove('bg-white');
 				profile.classList.add('bg-gray-900');
-				emailIcon.style.fill = 'white';
 				phoneIcon.style.fill = 'white';
 				locationIcon.style.fill = 'white';
 				name.classList.remove('light');
@@ -152,7 +149,6 @@
 				body.classList.add('text-gray-900');
 				profile.classList.remove('bg-gray-900');
 				profile.classList.add('bg-white');
-				emailIcon.style.fill = '';
 				phoneIcon.style.fill = '';
 				locationIcon.style.fill = '';
 				name.classList.remove('dark');
@@ -161,7 +157,7 @@
 		});
 
 	</script>
-	<script src="core.js"></script>
+	<script src="js/core.js"></script>
 	<script>
 		var app = document.getElementById('text');
 		var typewriter = new Typewriter(app, {
