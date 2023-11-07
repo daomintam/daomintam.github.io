@@ -1,0 +1,82 @@
+
+        .santa-claus {
+            position: absolute;
+            width: 370px;
+            right: -400px;
+            animation: santa-move 16s 2s linear infinite;
+            transform-origin: 50% 50%;
+        }
+
+        .santa-deer {
+            position: absolute;
+            width: 300px;
+            z-index: 3;
+            top: 5px;
+            transform-origin: right center;
+            animation: deer 5s infinite;
+        }
+
+        .santa-body {
+            position: absolute;
+            width: 115px;
+            right: 0;
+            top: 15px;
+            z-index: 2;
+        }
+
+        .santa-hand {
+            position: absolute;
+            width: 20px;
+            z-index: 1;
+            right: 60px;
+            top: 25px;
+            transform-origin: right bottom;
+            animation: shake-hand 3s infinite;
+        }
+
+      
+
+        @keyframes shake-hand {
+            50% {
+                transform: rotate(-30deg);
+            }
+        }
+
+        @keyframes deer {
+            50% {
+                transform: rotate(-5deg);
+            }
+        }
+
+        @keyframes santa-move {
+            0% {
+                top: 150px;
+                right: -400px;
+                transform: rotate(10deg);
+            }
+
+            30% {
+                top: 50px;
+                transform: rotate(0deg);
+            }
+
+            60% {
+                top: 150px;
+                right: 110%;
+                transform: rotate(-10deg);
+            }
+
+            100% {
+                right: 110%;
+            }
+        }
+
+        @keyframes text-show {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
