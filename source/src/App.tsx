@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useAmbientMotion } from './hooks/useAmbientMotion'
 import Story from './pages/Story'
 import Hub from './pages/Hub'
 import DayStories from './pages/DayStories'
@@ -6,6 +7,7 @@ import IncidentStories from './pages/IncidentStories'
 import './styles/atlas.css'
 import './styles/polish.css'
 import './styles/home.css'
+import './styles/creative.css'
 
 function currentRoute() {
   const hash = location.hash
@@ -17,6 +19,7 @@ function currentRoute() {
 
 export default function App() {
   const [route, setRoute] = useState(currentRoute)
+  useAmbientMotion(route)
   useEffect(() => {
     const update = () => setRoute(currentRoute())
     window.addEventListener('hashchange', update)

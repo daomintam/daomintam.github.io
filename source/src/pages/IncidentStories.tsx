@@ -1,4 +1,6 @@
 import { useCallback, useEffect, useState, type CSSProperties } from 'react'
+import { MoodSprite } from '../components/MoodSprite'
+import { DayAtmosphere } from '../components/DayAtmosphere'
 import { incidents, type Incident } from '../data/incidents'
 import { useChapterRail } from '../lib/useChapterRail'
 import { IncidentVisual } from '../components/IncidentVisual'
@@ -8,7 +10,7 @@ const stages = ['Chuyện gì xảy ra?', 'Cách ứng phó', 'Bài học']
 
 function CaseScene({ incident, index }: { incident: Incident; index: number }) {
   const [stage, setStage] = useState(0)
-  return <article className="case-scene" style={{ '--case-color': incident.color } as CSSProperties} aria-labelledby={`case-title-${index}`}>
+  return <article className="case-scene" style={{ '--case-color': incident.color, '--acid': incident.color } as CSSProperties} aria-labelledby={`case-title-${index}`}>
     <section className="case-intro">
       <p className="case-dateline"><span>{incident.chain}</span><time dateTime={incident.isoDate}>{incident.date}</time></p>
       <p className="atlas-eyebrow">HỒ SƠ {String(index + 1).padStart(2, '0')} / {incident.category}</p>
@@ -16,7 +18,7 @@ function CaseScene({ incident, index }: { incident: Incident; index: number }) {
       <p className="case-lead">{incident.lead}</p>
     </section>
     <div className="case-evidence">
-      <div className="case-diagram"><IncidentVisual incident={incident} responding={stage > 0} /></div>
+      <div className="case-diagram"><DayAtmosphere icons={index === 0 ? ['code', 'spark', 'paper'] : index === 1 ? ['paper', 'spark', 'check'] : index === 2 ? ['check', 'spark', 'code'] : ['code', 'spark', 'check']} label="CASE NOTES" /><span className="case-stage-sticker" aria-hidden="true">{['CHUỖI RẼ ĐÔI', 'MỘT QUYẾT ĐỊNH', 'CẦU NỐI GẶP SỰ CỐ', 'TẠM DỪNG. KHỞI ĐỘNG.'][index]}</span><IncidentVisual incident={incident} responding={stage > 0} /><div className="case-guide" aria-hidden="true"><MoodSprite pose={index === 1 ? 1 : 2} /><span>TΛM / GHI CHÉP</span></div></div>
       <div className="case-metric"><b>{incident.metric}</b><span>{incident.metricLabel}</span></div>
     </div>
     <section className="case-reading" aria-label={`Diễn biến ${incident.chain}`}>
@@ -43,7 +45,7 @@ export default function IncidentStories() {
     window.addEventListener('keydown', key)
     return () => window.removeEventListener('keydown', key)
   }, [active, navigate])
-  return <div className="atlas-app incident-app" style={{ '--case-color': incidents[active].color } as CSSProperties}>
+  return <div className="atlas-app incident-app" style={{ '--case-color': incidents[active].color, '--acid': incidents[active].color, '--case-bg': ['#241e19', '#211d2a', '#252216', '#1b2424'][active] } as CSSProperties}>
     <header className="atlas-header"><a className="atlas-brand" href="#/">TΛM <span>/</span> ATLAS</a><a className="back-topics" href="#/">← Chủ đề</a><span className="case-real-label"><i /> HỒ SƠ CÓ THẬT</span></header>
     <nav className="case-chain-nav" aria-label="Chọn hồ sơ blockchain">{incidents.map((incident, index) => <button key={incident.id} onClick={() => navigate(index)} aria-current={index === active ? 'step' : undefined} style={{ '--chain-color': incident.color } as CSSProperties}><span>{String(index + 1).padStart(2, '0')}</span>{incident.chain}</button>)}</nav>
     <main className="case-rail" ref={rail} {...dragHandlers} tabIndex={0} aria-label="Các hồ sơ sự cố, kéo ngang để khám phá">{incidents.map((incident, index) => <div className="case-slide" key={incident.id} aria-hidden={index !== active} ref={node => { if (node) node.inert = index !== active }}><CaseScene incident={incident} index={index} /></div>)}</main>
