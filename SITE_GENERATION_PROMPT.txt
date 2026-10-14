@@ -1,0 +1,7 @@
+Build a React + TypeScript portfolio matching this layout >97%: full-screen story, warm off-white/dark themes, slim top bar with brand left, 4 chapter dots center, theme toggle right. Place a two-column hero above center: chapter label, compact headline, story text, reveal CTA and X-avatar art with pastel shapes. Bottom-left: floating glass X card from the handle with exact display name/special characters, verified badge if present, @handle, bio, location text without icon, counts, circular avatar, and peach “HELLO WEB3!” bubble above it, never covering text. Mascot and hero use that same X avatar. Show bottom-right TikTok/GitHub/X links only when supplied. Brand = X display name stripped of spaces/special symbols + VERSE. Add wheel, swipe, buttons and mobile layout. Write 4 fictional chapters around Topic; if empty, pick a random topic.
+
+INPUT:
+-Tiktok id (Optional): @daomintam
+-Github (Optional): @daomintam
+-X handle: @daomintam
+-Topic (Optional): Crypto
