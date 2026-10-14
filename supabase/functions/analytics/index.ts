@@ -13,7 +13,7 @@ Deno.serve(async (request) => {
     const publicKey = Deno.env.get('ANALYTICS_PUBLISHABLE_KEY')
     if (!publicKey || request.headers.get('apikey') !== publicKey) return json({ error: 'Unauthorized' }, 401)
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!
-    const secretKey = Deno.env.get('SUPABASE_SECRET_KEY')!
+    const secretKey = Deno.env.get('ANALYTICS_SECRET_KEY')!
     const db = createClient(supabaseUrl, secretKey, { auth: { persistSession: false } })
     const body = await request.json()
 

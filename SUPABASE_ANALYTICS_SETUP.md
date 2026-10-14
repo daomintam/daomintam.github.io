@@ -6,12 +6,11 @@
 2. Chọn region gần người xem chính, đặt database password và chờ project khởi tạo.
 3. Vào **SQL Editor → New query**, dán toàn bộ file `supabase/analytics.sql`, rồi chọn **Run**.
 
-## 2. Cài và đăng nhập Supabase CLI
+## 2. Đăng nhập Supabase CLI
 
 ```powershell
-npm install -g supabase
-supabase login
-supabase link --project-ref YOUR_PROJECT_REF
+npx supabase@latest login
+npx supabase@latest link --project-ref YOUR_PROJECT_REF
 ```
 
 `YOUR_PROJECT_REF` nằm trong URL dashboard: `https://supabase.com/dashboard/project/YOUR_PROJECT_REF`.
@@ -28,8 +27,8 @@ Mở **Project Settings → API Keys**:
 Tại thư mục repository, chạy:
 
 ```powershell
-supabase secrets set SUPABASE_SECRET_KEY="YOUR_SECRET_KEY" ANALYTICS_PUBLISHABLE_KEY="YOUR_PUBLISHABLE_KEY"
-supabase functions deploy analytics --no-verify-jwt
+npx supabase@latest secrets set ANALYTICS_SECRET_KEY="YOUR_SECRET_KEY" ANALYTICS_PUBLISHABLE_KEY="YOUR_PUBLISHABLE_KEY"
+npx supabase@latest functions deploy analytics --no-verify-jwt --use-api
 ```
 
 Function dùng IP tạm thời để hỏi `api.country.is` tên quốc gia nhưng **không lưu IP**. Cờ `--no-verify-jwt` cần thiết vì function tự kiểm tra publishable key trong header.
