@@ -15,6 +15,7 @@ export default function Story() {
   const [language, setLanguage] = useState<'en' | 'vi'>(() => localStorage.getItem('tamverse-language') === 'vi' ? 'vi' : 'en')
   const locked = useRef(false)
   const touchX = useRef(0)
+  const touchY = useRef(0)
 
   const navigate = useCallback((next: number, dir?: 'next' | 'prev') => {
     if (locked.current || next === active) return
@@ -40,11 +41,13 @@ export default function Story() {
 
   useEffect(() => {
     const wheel = (event: WheelEvent) => {
-      if (Math.abs(event.deltaY) < 24) return
+      // Let pages and the analytics dialog scroll naturally on every device.
+      if (document.querySelector('.analytics-overlay') || document.documentElement.scrollHeight > window.innerHeight + 1 || Math.abs(event.deltaY) < 24) return
       event.preventDefault()
       event.deltaY > 0 ? next() : prev()
     }
     const key = (event: KeyboardEvent) => {
+      if (document.querySelector('.analytics-overlay') || (event.target instanceof HTMLElement && event.target.closest('button, a, input, textarea, select, [contenteditable]'))) return
       if (['ArrowRight', 'ArrowDown', 'PageDown'].includes(event.key)) next()
       if (['ArrowLeft', 'ArrowUp', 'PageUp'].includes(event.key)) prev()
     }
@@ -61,7 +64,7 @@ export default function Story() {
 
   const localizedChapters = language === 'vi' ? chaptersVi : chapters
 
-  return <div className="app-shell" onTouchStart={(e) => { touchX.current = e.changedTouches[0].clientX }} onTouchEnd={(e) => { const delta = e.changedTouches[0].clientX - touchX.current; if (Math.abs(delta) >= 45) delta < 0 ? next() : prev() }}>
+  return <div className="app-shell" onTouchStart={(e) => { touchX.current = e.changedTouches[0].clientX; touchY.current = e.changedTouches[0].clientY }} onTouchEnd={(e) => { const delta = e.changedTouches[0].clientX - touchX.current; if (!(e.target instanceof Element && e.target.closest('.analytics-overlay')) && Math.abs(delta) >= 45 && Math.abs(delta) > Math.abs(e.changedTouches[0].clientY - touchY.current) * 1.5) delta < 0 ? next() : prev() }}>
     <div className="ambient-motion" aria-hidden="true"><i /><i /><i /><i /></div>
     <StoryTopBar chapters={localizedChapters} active={active} onSelect={(index) => navigate(index)} dark={dark} onTheme={() => setDark((value) => !value)} language={language} onLanguage={() => setLanguage((value) => value === 'en' ? 'vi' : 'en')} />
     <StoryScene key={`${active}-${language}`} chapter={localizedChapters[active]} direction={direction} revealed={revealed} onReveal={reveal} mascotBounce={bouncing} language={language} />
