@@ -12,6 +12,10 @@ Use case: illustration-story. Create ONE standalone high resolution square trans
 - `focus.png`: determined eyes, hands clasped in front, matching top row fourth pose.
 - `work.png`: working behind a plain dark laptop, matching third row first pose, no brand or logo.
 - `phone.png`: holding smartphone with both hands, matching second row fourth pose.
-- `tea.png`: holding bubble milk tea and sipping through straw, matching third row second pose.
+- `coffee.png`: holding a small clear glass of Vietnamese salted coffee with dark coffee below and ivory salted cream foam above; no pearls, straw or lid.
 - `music.png`: eyes closed listening with large black over-ear headphones, matching second row fifth pose.
 - `sleep.png`: sleeping with head resting on folded sleeves, matching top row fifth pose.
+
+## Salted coffee replacement
+
+Built-in imagegen edit using the former tea pose as reference: preserve character identity, detailed rendering, pose and transparent background. Change only the drink to a small clear open glass of Vietnamese salted coffee, dark espresso below and thick ivory salted cream foam above. No tapioca pearls, no boba, no straw, no domed lid. Hand holds the glass naturally beside the chest; mask stays fully covering the face. Fine crisp outlines, no words, full-resolution square RGBA PNG. Saved as `source/public/img/moods/coffee.png` and `img/moods/coffee.png`.

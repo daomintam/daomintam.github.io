@@ -1,6 +1,7 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState, type CSSProperties } from 'react'
 import { MoodSprite } from '../components/MoodSprite'
-import { dayScenes } from '../data/dayScenes'
+import { DayAtmosphere } from '../components/DayAtmosphere'
+import { dayScenes, dayThemes } from '../data/dayScenes'
 import { useChapterRail } from '../lib/useChapterRail'
 import '../styles/day.css'
 
@@ -17,13 +18,14 @@ export default function DayStories() {
     window.addEventListener('keydown', key)
     return () => window.removeEventListener('keydown', key)
   }, [active, navigate])
-  return <div className="day-app">
+  const themeStyle = (index: number) => ({ '--acid': dayThemes[index].accent, '--day-bg': dayThemes[index].background, '--day-glow': dayThemes[index].glow } as CSSProperties)
+  return <div className="day-app" style={themeStyle(active)}>
     <header className="day-header"><a href="#/" aria-label="Về trang chủ đề">TΛM <span>/</span> ATLAS ↗</a><span>MỘT NGÀY KHÔNG QUÁ NGHIÊM TÚC</span><b>Não mở 20 tab<span className="day-live" /></b></header>
     <main className="day-rail" ref={rail} {...drag} tabIndex={0} aria-label="Kéo ngang khám phá một ngày của TΛM">
-      {dayScenes.map((scene, index) => <section key={index} className="day-slide" aria-hidden={active !== index} ref={node => { if (node) node.inert = active !== index }}>
+      {dayScenes.map((scene, index) => <section key={index} className="day-slide" style={themeStyle(index)} data-scene={index} aria-hidden={active !== index} ref={node => { if (node) node.inert = active !== index }}>
         <article className="day-scene">
           <div className="day-copy"><p className="day-eyebrow">NHẬT KÝ HƯ CẤU <span>· {scene[0]}</span></p><h1>{scene[1]}</h1><p className="day-prose">{scene[2]}</p><div className="day-choices"><span>RỒI SAO NỮA?</span><button onClick={() => navigate(scene[6])}>{scene[5]} <i>↗</i></button><button onClick={() => navigate(scene[8])}>{scene[7]} <i>↗</i></button></div></div>
-          <div className="day-art"><span className="day-orbit" /><span className="day-sticker">{index === dayScenes.length - 1 ? 'MAI TÍNH!' : 'ĐỜI MÀ.'}</span><MoodSprite pose={scene[4]} /><span className="day-time">{scene[0]}</span><p className="day-status"><span />{scene[3]}</p></div>
+          <div className="day-art"><DayAtmosphere icons={dayThemes[index].icons} label={dayThemes[index].label} /><span className="day-orbit" /><span className="day-sticker">{dayThemes[index].sticker}</span><MoodSprite pose={scene[4]} /><span className="day-time">{scene[0]}</span><p className="day-status"><span />{scene[3]}</p></div>
         </article>
       </section>)}
     </main>
