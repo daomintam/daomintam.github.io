@@ -41,10 +41,11 @@ export default function Story() {
 
   useEffect(() => {
     const wheel = (event: WheelEvent) => {
-      // Let pages and the analytics dialog scroll naturally on every device.
-      if (document.querySelector('.analytics-overlay') || document.documentElement.scrollHeight > window.innerHeight + 1 || Math.abs(event.deltaY) < 24) return
+      if (document.querySelector('.analytics-overlay')) return
       event.preventDefault()
-      event.deltaY > 0 ? next() : prev()
+      const horizontal = Math.abs(event.deltaX) > Math.abs(event.deltaY) ? event.deltaX : event.deltaY
+      if (Math.abs(horizontal) < 24) return
+      horizontal > 0 ? next() : prev()
     }
     const key = (event: KeyboardEvent) => {
       if (document.querySelector('.analytics-overlay') || (event.target instanceof HTMLElement && event.target.closest('button, a, input, textarea, select, [contenteditable]'))) return

@@ -325,6 +325,100 @@ h1 { font-family: "Bricolage Grotesque", sans-serif; font-size: clamp(38px, 5.6v
 .x-card { max-width: 100%; height: auto; min-height: 174px; }
 .x-stats { flex-wrap: wrap; row-gap: 4px; }
 
+/* One viewport per chapter; navigation moves horizontally. */
+html, body, #root { height: 100%; overflow: hidden; }
+.app-shell { height: 100svh; height: 100dvh; min-height: 0; grid-template-rows: auto minmax(0, 1fr) auto auto; gap: 14px; padding: 18px 28px; overflow: hidden; }
+.story-scene { height: 100%; margin: 0 auto; padding: 12px 0; top: 0; }
+.art-stage { min-height: 0; height: 100%; }
+.art-stage::before { width: min(90%, 44vh); }
+.mascot { width: min(90%, 42vh); max-height: 90%; }
+h1 { font-size: clamp(30px, 4.5vw, 60px); }
+.story-body { font-size: clamp(14px, 1.65vw, 19px); margin-top: 18px; line-height: 1.45; }
+.reveal-row { margin-top: 16px; gap: 10px; min-height: 0; }
+.punchline { font-size: 12px; }
+.bottom-bar { gap: 14px; }
+.x-card { width: 360px; min-height: 68px; height: auto; padding: 8px 12px; grid-template-columns: 48px minmax(0,1fr); column-gap: 10px; border-radius: 16px; }
+.x-avatar-wrap { width: 46px; height: 46px; margin: 0; align-self: center; }
+.x-message { display: none; }
+.x-main { padding: 0; }
+.x-main h2 { font-size: 16px; }
+.x-card-top { top: 0; }
+.x-handle, .x-bio, .x-location { font-size: 10px; margin-top: 1px; }
+.x-stats { margin-top: 3px; font-size: 9px; gap: 12px; }
+.x-stats strong { font-size: 11px; }
+.x-card:hover, .x-card:focus-visible { transform: none; }
+.social-links { margin: 0; font-size: 10px; gap: 12px; }
+@media (max-width: 900px) and (orientation: portrait) {
+  .app-shell { display: grid; grid-template-columns: minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr) auto auto auto; gap: 8px; padding: max(10px, env(safe-area-inset-top)) max(14px, env(safe-area-inset-right)) max(10px, env(safe-area-inset-bottom)) max(14px, env(safe-area-inset-left)); }
+  .topbar { gap: 6px; }
+  .chapters { grid-column: 1; grid-row: 2; }
+  .top-actions { grid-row: 1 / 3; }
+  .theme-toggle, .language-toggle { width: 36px; height: 36px; }
+  .chapters button { width: 32px; height: 28px; }
+  .story-scene { grid-template-columns: minmax(0,1fr); grid-template-rows: auto auto minmax(0,1fr) auto auto; gap: 10px; padding: 4px 0; }
+  .kicker { font-size: 9px; }
+  .kicker span { width: 22px; height: 22px; }
+  h1 { font-size: clamp(26px, 7vw, 40px); }
+  .art-stage { width: 100%; height: 100%; aspect-ratio: auto; min-height: 0; max-height: none; }
+  .art-stage::before { height: 92%; width: auto; max-width: 94%; aspect-ratio: 1; }
+  .mascot { height: 92%; width: auto; max-width: 82%; max-height: 100%; }
+  .symbol { width: 48px; height: 48px; font-size: 16px; left: 6%; top: 12%; }
+  .sticker { min-width: 90px; padding: 10px; right: 3%; top: 10%; border-radius: 12px; }
+  .sticker span { font-size: 9px; }
+  .sticker strong { font-size: 12px; }
+  .story-body { font-size: clamp(12px, 3.4vw, 16px); line-height: 1.4; margin: 0; }
+  .reveal-row { margin: 0; gap: 5px; }
+  .cta { padding: 10px 15px; font-size: 13px; }
+  .punchline { max-width: none; font-size: 11px; }
+  .bottom-bar { margin: 0; gap: 5px; }
+  .controls button { padding: 8px 13px; font-size: 13px; }
+  .footer-note p { font-size: 10px; }
+  .analytics-trigger { width: 24px; height: 24px; }
+  .x-card { margin: 0 auto; width: min(100%, 408px); min-height: 0; }
+  .social-links { justify-content: center; }
+}
+@media (orientation: landscape) and (max-height: 600px) {
+  .app-shell { display: grid; grid-template-columns: minmax(0,1fr) auto; grid-template-rows: auto minmax(0,1fr) auto auto; padding: 8px 18px; gap: 6px; }
+  .topbar { grid-template-columns: 1fr auto auto; gap: 14px; }
+  .brand span { display: none; }
+  .chapters { grid-column: 2; grid-row: 1; }
+  .top-actions { grid-column: 3; grid-row: 1; }
+  .chapters button, .theme-toggle, .language-toggle { width: 32px; height: 30px; }
+  .story-scene { grid-template-columns: minmax(0,1.3fr) minmax(0,1fr); gap: 18px; padding: 4px 0; }
+  .story-copy { display: block; }
+  .kicker { font-size: 9px; margin-bottom: 6px; }
+  .kicker span { width: 20px; height: 20px; }
+  h1 { font-size: clamp(24px, 4vw, 36px); }
+  .story-body { font-size: 12px; margin-top: 8px; line-height: 1.35; }
+  .reveal-row { margin-top: 8px; gap: 6px; }
+  .cta { font-size: 12px; padding: 8px 12px; }
+  .punchline { font-size: 10px; }
+  .art-stage { width: 100%; aspect-ratio: auto; max-height: none; }
+  .mascot { width: auto; height: 90%; max-width: 90%; }
+  .symbol { width: 42px; height: 42px; font-size: 14px; }
+  .sticker { min-width: 80px; padding: 9px; }
+  .sticker span { font-size: 9px; } .sticker strong { font-size: 11px; }
+  .bottom-bar { display: grid; grid-template-columns: 1fr auto; margin: 0; }
+  .footer-note { justify-content: flex-start; }
+  .footer-note p { font-size: 10px; }
+  .controls button { font-size: 12px; padding: 6px 10px; }
+  .x-card { margin: 0; width: 340px; padding: 5px 10px; }
+  .social-links { justify-content: flex-end; }
+}
+
+.app-shell { touch-action: pan-y pinch-zoom; }
+.art-stage .mascot { position: absolute; inset: 5%; width: 90%; height: 90%; max-width: none; max-height: none; object-fit: contain; }
+@media (max-height: 650px) and (orientation: portrait) {
+  .app-shell { gap: 6px; }
+  .story-scene { gap: 6px; }
+  h1 { font-size: 25px; }
+  .story-body { font-size: 12px; line-height: 1.35; }
+  .x-card { padding: 5px 10px; grid-template-columns: 36px minmax(0,1fr); }
+  .x-avatar-wrap { width: 34px; height: 34px; }
+  .x-main h2 { font-size: 14px; }
+  .x-handle, .x-bio, .x-location { font-size: 9px; }
+  .footer-note p { font-size: 9px; }
+}
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
 }
