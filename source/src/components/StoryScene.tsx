@@ -32,7 +32,7 @@ export function StoryScene({ chapter, index, total, revealed, onReveal, mascotBo
       <span className="art-index" aria-hidden="true">{number}</span>
       <div className="art-orbit" aria-hidden="true" />
       <div className="orb orb-one" aria-hidden="true" /><div className="orb orb-two" aria-hidden="true" />
-      <div className="art-figure"><img className={`mascot ${mascotBounce ? 'boing' : ''}`} src="/img/me.svg" alt={vi ? 'Mascot TΛM chuyển động' : 'TΛM animated mascot'} draggable={false} /></div>
+      <div className="art-figure"><img className={`mascot ${mascotBounce ? 'boing' : ''}`} src={chapter.artwork} alt={`${vi ? 'Nhân vật TΛM — ' : 'TΛM mascot — '}${chapter.kicker}`} draggable={false} /></div>
       <div className="symbol" aria-hidden="true">{chapter.symbol}</div>
       <div className="sticker" aria-hidden="true"><span>{chapter.sticker[0]}</span><strong>{chapter.sticker[1]}</strong><i>✳</i></div>
       <p className="art-caption" aria-hidden="true"><span>✳</span> {vi ? 'MỘT CHÚT TÒ MÒ. CẢ VŨ TRỤ.' : 'A LITTLE CURIOUS. A WHOLE UNIVERSE.'}</p>

@@ -8,7 +8,7 @@ export function useChapterRail(onActive: (index: number) => void, total: number)
   const drag = useRef<{ id: number; x: number; y: number; left: number; lastX: number; lastTime: number; velocity: number; moved: boolean } | null>(null)
   const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches
   const stop = useCallback(() => { cancelAnimationFrame(frame.current); frame.current = 0; clearTimeout(timer.current) }, [])
-  const animate = useCallback((target: number, duration = 1450) => {
+  const animate = useCallback((target: number, duration = 2300) => {
     const el = rail.current
     if (!el) return
     stop()
@@ -18,7 +18,7 @@ export function useChapterRail(onActive: (index: number) => void, total: number)
     const tick = (now: number) => {
       if (reduced()) { el.scrollLeft = destination.current; frame.current = 0; return }
       const t = Math.min(1, (now - started) / duration)
-      const progress = duration >= 1400 ? t * t * (3 - 2 * t) : 1 - Math.pow(1 - t, 3)
+      const progress = duration >= 2200 ? t * t * (3 - 2 * t) : 1 - Math.pow(1 - t, 3)
       el.scrollLeft = start + distance * progress
       if (t < 1) frame.current = requestAnimationFrame(tick)
       else frame.current = 0
@@ -45,12 +45,12 @@ export function useChapterRail(onActive: (index: number) => void, total: number)
       if (drag.current) return
       const horizontal = Math.abs(event.deltaX) > Math.abs(event.deltaY)
       const unit = event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? el.clientWidth : 1
-      const delta = (horizontal ? event.deltaX : event.deltaY) * unit * (horizontal ? 1 : 1.8)
+      const delta = (horizontal ? event.deltaX : event.deltaY) * unit * (horizontal ? .65 : .9)
       const target = (frame.current ? destination.current : el.scrollLeft) + delta
-      animate(target, 600)
+      animate(target, 950)
       timer.current = setTimeout(() => {
-        animate(Math.round(destination.current / el.clientWidth) * el.clientWidth, 1000)
-      }, 220)
+        animate(Math.round(destination.current / el.clientWidth) * el.clientWidth, 1700)
+      }, 320)
     }
     const resize = new ResizeObserver(() => {
       if (width === el.clientWidth) return
@@ -95,8 +95,8 @@ export function useChapterRail(onActive: (index: number) => void, total: number)
     drag.current = null; delete el.dataset.dragging
     if (el.hasPointerCapture(e.pointerId)) el.releasePointerCapture(e.pointerId)
     const velocity = performance.now() - state.lastTime < 100 ? state.velocity : 0
-    const projected = el.scrollLeft + Math.max(-el.clientWidth * .35, Math.min(el.clientWidth * .35, velocity * 120))
-    animate(Math.round(projected / el.clientWidth) * el.clientWidth, 1100)
+    const projected = el.scrollLeft + Math.max(-el.clientWidth * .2, Math.min(el.clientWidth * .35, velocity * 85))
+    animate(Math.round(projected / el.clientWidth) * el.clientWidth, 1800)
   }
   return { rail, navigate, onPointerDown, onPointerMove, onPointerUp: finish, onPointerCancel: finish }
 }
