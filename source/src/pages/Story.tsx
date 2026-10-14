@@ -16,6 +16,7 @@ export default function Story() {
   const locked = useRef(false)
   const touchX = useRef(0)
   const touchY = useRef(0)
+  const wheelGesture = useRef({ last: 0, distance: 0, handled: false })
 
   const navigate = useCallback((next: number, dir?: 'next' | 'prev') => {
     if (locked.current || next === active) return
@@ -41,11 +42,19 @@ export default function Story() {
 
   useEffect(() => {
     const wheel = (event: WheelEvent) => {
-      if (document.querySelector('.analytics-overlay')) return
+      if (event.ctrlKey || document.querySelector('.analytics-overlay')) return
       event.preventDefault()
-      const horizontal = Math.abs(event.deltaX) > Math.abs(event.deltaY) ? event.deltaX : event.deltaY
-      if (Math.abs(horizontal) < 24) return
-      horizontal > 0 ? next() : prev()
+      const now = performance.now()
+      const gesture = wheelGesture.current
+      if (now - gesture.last > 180) { gesture.distance = 0; gesture.handled = false }
+      gesture.last = now
+      if (gesture.handled || locked.current) return
+      const delta = Math.abs(event.deltaX) > Math.abs(event.deltaY) ? event.deltaX : event.deltaY
+      const unit = event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? window.innerHeight : 1
+      gesture.distance += delta * unit
+      if (Math.abs(gesture.distance) < 48) return
+      gesture.handled = true
+      gesture.distance > 0 ? next() : prev()
     }
     const key = (event: KeyboardEvent) => {
       if (document.querySelector('.analytics-overlay') || (event.target instanceof HTMLElement && event.target.closest('button, a, input, textarea, select, [contenteditable]'))) return
@@ -68,7 +77,7 @@ export default function Story() {
   return <div className="app-shell" style={{ '--accent': localizedChapters[active].color } as React.CSSProperties} onTouchStart={(e) => { touchX.current = e.changedTouches[0].clientX; touchY.current = e.changedTouches[0].clientY }} onTouchEnd={(e) => { const delta = e.changedTouches[0].clientX - touchX.current; if (!(e.target instanceof Element && e.target.closest('.analytics-overlay')) && Math.abs(delta) >= 45 && Math.abs(delta) > Math.abs(e.changedTouches[0].clientY - touchY.current) * 1.5) delta < 0 ? next() : prev() }}>
     <div className="ambient-motion" aria-hidden="true"><i /><i /><i /><i /></div>
     <StoryTopBar chapters={localizedChapters} active={active} onSelect={(index) => navigate(index)} dark={dark} onTheme={() => setDark((value) => !value)} language={language} onLanguage={() => setLanguage((value) => value === 'en' ? 'vi' : 'en')} />
-    <StoryScene key={`${active}-${language}`} chapter={localizedChapters[active]} direction={direction} revealed={revealed} onReveal={reveal} mascotBounce={bouncing} language={language} />
+    <StoryScene index={active} total={localizedChapters.length} key={`${active}-${language}`} chapter={localizedChapters[active]} direction={direction} revealed={revealed} onReveal={reveal} mascotBounce={bouncing} language={language} />
     <StoryControls active={active} total={localizedChapters.length} onPrev={prev} onNext={next} language={language} />
     <div className="profile-slot"><XProfileCard language={language} /></div>
     <aside className="social-links" aria-label={language === 'vi' ? 'Mạng xã hội' : 'Social profiles'}>
