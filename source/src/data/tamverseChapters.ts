@@ -35,3 +35,30 @@ export const chapters: Chapter[] = [
     symbol: 'GM', sticker: ['GOOD', 'MORNING'], color: '#f4d278',
   },
 ]
+
+export const chaptersVi: Chapter[] = [
+  {
+    kicker: 'Tin nhắn lúc nửa đêm', title: 'TΛM & khối bị lạc.',
+    body: '11:59 tối. Một khối gõ cửa sổ: “Tôi bị lạc trên blockchain.” TΛM đặt cốc cà phê xuống, kéo mũ áo lên rồi hỏi điều hiển nhiên: “Bạn thử làm mới chưa?”',
+    cta: 'Làm mới vũ trụ', punchline: '“Thử rồi. Vũ trụ vẫn đang tải.”',
+    symbol: '◈', sticker: ['LUÔN', 'TÒ MÒ'], color: '#9fd8bf',
+  },
+  {
+    kicker: 'Cây cầu Gas', title: 'Trả phí bằng tiếng cười.',
+    body: 'Cây cầu đòi 300 ETH. TΛM kể một câu chuyện cười về chiếc ví trống rỗng. Cầu cười đến cong cả lan can rồi quên luôn phí qua đường. “Đây là bằng chứng hài hước à?” khối nhỏ thì thầm.',
+    cta: 'Thêm một câu nữa', punchline: '“Ví của tôi phi tập trung đến mức chính tôi cũng không tìm thấy tiền.”',
+    symbol: 'HA!', sticker: ['LUÔN', 'TÒ MÒ'], color: '#ffb87e',
+  },
+  {
+    kicker: 'Thành phố Đồng thuận', title: 'Tên hay hơn mã dài.',
+    body: 'Mọi cánh cửa đều hỏi một đoạn mã dài bất tận. TΛM đặt một ký hiệu @ khổng lồ lên cổng. “Dùng tên của chúng ta thôi.” Cả thành phố thở phào. Một robot xúc động đến rơi mất ba con ốc.',
+    cta: 'Chào GM mọi người', punchline: '“GM, TΛM!” — cả thành phố đồng thanh, kể cả máy nướng bánh.',
+    symbol: '@', sticker: ['LUÔN', 'TÒ MÒ'], color: '#b0d9bf',
+  },
+  {
+    kicker: 'Khối cuối trước bình minh', title: 'Đi xa. Cùng nhau.',
+    body: 'TΛM tìm được một mái nhà cho khối nhỏ. Nó không mang kho báu, chỉ mang lời mời cùng xây điều tốt đẹp. Mặt trời mọc. TΛM mở laptop. Cà phê đã nguội; cộng đồng thì ấm hơn.',
+    cta: 'Nhận huy hiệu GM', punchline: 'Đã mở khóa huy hiệu: giúp vũ trụ bớt nghiêm túc một chút ☀',
+    symbol: 'GM', sticker: ['CHÀO', 'BUỔI SÁNG'], color: '#f4d278',
+  },
+]

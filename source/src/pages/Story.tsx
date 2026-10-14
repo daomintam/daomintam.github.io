@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { chapters } from '../data/tamverseChapters'
+import { chapters, chaptersVi } from '../data/tamverseChapters'
 import { StoryTopBar } from '../components/StoryTopBar'
 import { StoryScene } from '../components/StoryScene'
 import { StoryControls } from '../components/StoryControls'
@@ -12,6 +12,7 @@ export default function Story() {
   const [revealed, setRevealed] = useState(false)
   const [bouncing, setBouncing] = useState(false)
   const [dark, setDark] = useState(() => localStorage.getItem('tamverse-theme') !== 'light')
+  const [language, setLanguage] = useState<'en' | 'vi'>(() => localStorage.getItem('tamverse-language') === 'vi' ? 'vi' : 'en')
   const locked = useRef(false)
   const touchX = useRef(0)
 
@@ -31,6 +32,11 @@ export default function Story() {
     document.documentElement.dataset.theme = dark ? 'dark' : 'light'
     localStorage.setItem('tamverse-theme', dark ? 'dark' : 'light')
   }, [dark])
+
+  useEffect(() => {
+    document.documentElement.lang = language
+    localStorage.setItem('tamverse-language', language)
+  }, [language])
 
   useEffect(() => {
     const wheel = (event: WheelEvent) => {
@@ -53,12 +59,15 @@ export default function Story() {
     window.setTimeout(() => setBouncing(false), 700)
   }
 
+  const localizedChapters = language === 'vi' ? chaptersVi : chapters
+
   return <div className="app-shell" onTouchStart={(e) => { touchX.current = e.changedTouches[0].clientX }} onTouchEnd={(e) => { const delta = e.changedTouches[0].clientX - touchX.current; if (Math.abs(delta) >= 45) delta < 0 ? next() : prev() }}>
-    <StoryTopBar chapters={chapters} active={active} onSelect={(index) => navigate(index)} dark={dark} onTheme={() => setDark((value) => !value)} />
-    <StoryScene key={active} chapter={chapters[active]} direction={direction} revealed={revealed} onReveal={reveal} mascotBounce={bouncing} />
-    <StoryControls active={active} total={chapters.length} onPrev={prev} onNext={next} />
-    <XProfileCard />
-    <aside className="social-links" aria-label="Social profiles">
+    <div className="ambient-motion" aria-hidden="true"><i /><i /><i /><i /></div>
+    <StoryTopBar chapters={localizedChapters} active={active} onSelect={(index) => navigate(index)} dark={dark} onTheme={() => setDark((value) => !value)} language={language} onLanguage={() => setLanguage((value) => value === 'en' ? 'vi' : 'en')} />
+    <StoryScene key={`${active}-${language}`} chapter={localizedChapters[active]} direction={direction} revealed={revealed} onReveal={reveal} mascotBounce={bouncing} language={language} />
+    <StoryControls active={active} total={localizedChapters.length} onPrev={prev} onNext={next} language={language} />
+    <XProfileCard language={language} />
+    <aside className="social-links" aria-label={language === 'vi' ? 'Mạng xã hội' : 'Social profiles'}>
       <a href="https://www.tiktok.com/@mintamdao" target="_blank" rel="noreferrer">TikTok</a>
       <a href="https://github.com/daomintam" target="_blank" rel="noreferrer">GitHub</a>
       <a href={xProfile.url} target="_blank" rel="noreferrer">X</a>
