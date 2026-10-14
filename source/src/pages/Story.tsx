@@ -1,3 +1,4 @@
+import { DeviceTilt } from '../components/DeviceTilt'
 import { AnalyticsWidget } from '../components/AnalyticsWidget'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { chapters, chaptersVi } from '../data/tamverseChapters'
@@ -86,6 +87,7 @@ export default function Story() {
       <a href="https://github.com/daomintam" target="_blank" rel="noreferrer">GitHub</a>
       <a href={xProfile.url} target="_blank" rel="noreferrer">X</a>
       <AnalyticsWidget language={language} />
+      <DeviceTilt language={language} />
     </aside>
   </div>
 }
