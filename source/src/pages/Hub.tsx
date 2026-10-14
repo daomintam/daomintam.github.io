@@ -1,4 +1,5 @@
 import { useState, type CSSProperties } from 'react'
+import { DayAtmosphere } from '../components/DayAtmosphere'
 import { MoodSprite } from '../components/MoodSprite'
 import '../styles/day.css'
 import { topics } from '../data/topics'
@@ -14,10 +15,10 @@ export default function Hub() {
     <header className="atlas-header"><a className="atlas-brand" href="#/">TΛM <span>/</span> ATLAS<span className="brand-dot" /></a><span className="atlas-header-note">MỖI CHỦ ĐỀ, MỘT THẾ GIỚI.</span><a className="atlas-header-link" href={xProfile.url} target="_blank" rel="noreferrer">TΛM trên X ↗</a></header>
     <main className="hub-main">
       <section className="hub-intro">
-        <p className="atlas-eyebrow"><span /> CHUYỆN KỂ TƯƠNG TÁC</p>
-        <h1>Mỗi câu chuyện,<br /><em>một thế giới.</em></h1>
-        <p className="hub-description">Một ngày rất đời. Một chuyến đi rất khác. Chọn câu chuyện bạn thích, kéo ngang và để sự tò mò dẫn lối.</p>
-        <a className="hub-primary" href="#/mot-ngay">Bắt đầu ngày mới <span aria-hidden="true">↗</span></a>
+        <p className="atlas-eyebrow"><span /> GHÉ CHƠI CÙNG TΛM</p>
+        <h1>Có cà phê.<br /><em>Có chuyện hay.</em></h1>
+        <p className="hub-description">Gác bớt vài chiếc tab. Cầm một ly cà phê muối, gặp TΛM và bước vào một ngày không cần quá hoàn hảo.</p>
+        <a className="hub-primary" href="#/mot-ngay">Vào chơi một ngày <span aria-hidden="true">↗</span></a>
         <div className="hub-index"><b>{String(topics.length).padStart(2, '0')}</b><span>chủ đề<br />đang mở</span><i /><span>Một màn hình.<br />Một hành trình của riêng bạn.</span></div>
         <nav className="topic-filters" aria-label="Lọc chủ đề">{([{ id: 'all', label: 'Tất cả' }, { id: 'fact', label: 'Có thật' }, { id: 'fiction', label: 'Hư cấu' }] as const).map(item => <button key={item.id} aria-pressed={filter === item.id} onClick={() => setFilter(item.id)}>{item.label}</button>)}</nav>
       </section>
@@ -25,7 +26,7 @@ export default function Hub() {
         {visible.map(topic => <a className={`topic-card topic-${topic.kind} topic-${topic.id}`} key={topic.id} href={topic.href}>
           <div className="topic-card-top"><span className="topic-kind"><i />{topic.tag}</span><span className="topic-number">/{topic.index}</span></div>
           <div className="topic-card-content"><div><h2>{topic.title}</h2><p>{topic.description}</p><span className="topic-enter">{topic.id === 'day' ? 'Khám phá một ngày' : topic.kind === 'fact' ? 'Mở hồ sơ' : 'Vào TΛMVERSE'} <b aria-hidden="true">↗</b></span></div>
-            {topic.id === 'day' ? <MoodSprite pose={4} /> : topic.kind === 'fact' ? <div className="topic-miniature" style={{ '--case-color': '#f3b36a' } as CSSProperties}><IncidentVisual incident={incidents[0]} compact /></div> : <img className="topic-mascot" src="/img/me.svg" alt="Nhân vật TΛM trong chuyến phiêu lưu hư cấu" loading="lazy" />}
+            {topic.id === 'day' ? <div className="hub-art-preview hub-coffee-preview" aria-hidden="true"><DayAtmosphere icons={['bean', 'sun', 'spark']} label="SLOW MORNING" /><span className="hub-art-orbit" /><span className="hub-art-sticker">MẶN MÀ VỪA ĐỦ</span><MoodSprite pose={4} /><span className="hub-art-time">07:30</span></div> : topic.kind === 'fact' ? <div className="topic-miniature" style={{ '--case-color': '#f3b36a' } as CSSProperties}><IncidentVisual incident={incidents[0]} compact /></div> : <div className="hub-art-preview hub-fiction-preview" aria-hidden="true"><span className="hub-art-orbit" /><span className="hub-art-sticker">STAY CURIOUS</span><img className="topic-mascot" src="/img/me.svg" alt="" loading="lazy" /></div>}
           </div>
           <div className="topic-card-bottom">{topic.id === 'day' ? <><span>BẠN CHỌN DIỄN BIẾN</span><span>07 biểu cảm · Một ngày</span></> : topic.kind === 'fact' ? <><span>BTC / ETH / BNB / SOL</span><span>{String(incidents.length).padStart(2, '0')} hồ sơ · Có nguồn gốc</span></> : <><span>HƯ CẤU / TƯỞNG TƯỢNG</span><span>04 chương</span></>}</div>
         </a>)}

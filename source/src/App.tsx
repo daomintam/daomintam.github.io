@@ -5,6 +5,7 @@ import DayStories from './pages/DayStories'
 import IncidentStories from './pages/IncidentStories'
 import './styles/atlas.css'
 import './styles/polish.css'
+import './styles/home.css'
 
 function currentRoute() {
   const hash = location.hash
