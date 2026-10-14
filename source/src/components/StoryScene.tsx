@@ -18,7 +18,7 @@ export function StoryScene({ chapter, direction, revealed, onReveal, mascotBounc
       <div className="orb orb-two" />
       <div className="symbol" aria-hidden="true">{chapter.symbol}</div>
       <div className="sticker" aria-hidden="true"><span>{chapter.sticker[0]}</span><strong>{chapter.sticker[1]}</strong></div>
-      <img className={`mascot ${mascotBounce ? 'boing' : ''}`} src="/img/x-avatar.jpg" alt="TΛM X profile avatar used as the story mascot" />
+      <img className={`mascot ${mascotBounce ? 'boing' : ''}`} src="/img/me.svg" alt="TΛM animated mascot" />
     </section>
   </main>
 }
