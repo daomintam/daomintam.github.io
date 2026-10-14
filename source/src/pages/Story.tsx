@@ -65,7 +65,7 @@ export default function Story() {
 
   const localizedChapters = language === 'vi' ? chaptersVi : chapters
 
-  return <div className="app-shell" onTouchStart={(e) => { touchX.current = e.changedTouches[0].clientX; touchY.current = e.changedTouches[0].clientY }} onTouchEnd={(e) => { const delta = e.changedTouches[0].clientX - touchX.current; if (!(e.target instanceof Element && e.target.closest('.analytics-overlay')) && Math.abs(delta) >= 45 && Math.abs(delta) > Math.abs(e.changedTouches[0].clientY - touchY.current) * 1.5) delta < 0 ? next() : prev() }}>
+  return <div className="app-shell" style={{ '--accent': localizedChapters[active].color } as React.CSSProperties} onTouchStart={(e) => { touchX.current = e.changedTouches[0].clientX; touchY.current = e.changedTouches[0].clientY }} onTouchEnd={(e) => { const delta = e.changedTouches[0].clientX - touchX.current; if (!(e.target instanceof Element && e.target.closest('.analytics-overlay')) && Math.abs(delta) >= 45 && Math.abs(delta) > Math.abs(e.changedTouches[0].clientY - touchY.current) * 1.5) delta < 0 ? next() : prev() }}>
     <div className="ambient-motion" aria-hidden="true"><i /><i /><i /><i /></div>
     <StoryTopBar chapters={localizedChapters} active={active} onSelect={(index) => navigate(index)} dark={dark} onTheme={() => setDark((value) => !value)} language={language} onLanguage={() => setLanguage((value) => value === 'en' ? 'vi' : 'en')} />
     <StoryScene key={`${active}-${language}`} chapter={localizedChapters[active]} direction={direction} revealed={revealed} onReveal={reveal} mascotBounce={bouncing} language={language} />

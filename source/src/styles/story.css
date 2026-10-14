@@ -419,6 +419,92 @@ h1 { font-size: clamp(30px, 4.5vw, 60px); }
   .x-handle, .x-bio, .x-location { font-size: 9px; }
   .footer-note p { font-size: 9px; }
 }
+/* Shared visual rhythm for the full-screen story. */
+.app-shell { padding: clamp(16px, 2.6vw, 40px) clamp(22px, 4.5vw, 76px); gap: 18px; }
+.app-shell::before { background: radial-gradient(ellipse at 75% 43%, color-mix(in srgb, var(--accent) 11%, transparent), transparent 38%); }
+.topbar { padding-bottom: 18px; border-bottom: 1px solid var(--border); }
+.brand { font-size: 11px; gap: 14px; }
+.brand span { opacity: .65; }
+.chapters { background: color-mix(in srgb, var(--surface) 75%, transparent); border-color: color-mix(in srgb, var(--border) 65%, transparent); padding: 4px; }
+.chapters button { font-size: 10px; }
+.chapters button:hover { transform: none; color: var(--text); background: var(--border); }
+.chapters button.active { color: #101412; background: var(--chapter-color); }
+.theme-toggle, .language-toggle { width: 40px; height: 40px; font-size: 11px; }
+.theme-toggle { font-size: 19px; background: transparent; }
+.story-scene { width: min(1240px, 100%); gap: clamp(24px, 6vw, 100px); grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); }
+.story-copy { max-width: 570px; }
+.kicker { font-size: 10px; letter-spacing: .15em; margin-bottom: 24px; display: flex; align-items: center; gap: 10px; }
+.kicker span { margin: 0; width: 26px; height: 26px; flex: 0 0 auto; }
+h1 { font-size: clamp(36px, 4.9vw, 74px); line-height: 1.02; letter-spacing: -.04em; font-variation-settings: "wdth" 100; text-wrap: balance; }
+.story-body { max-width: 490px; font-size: clamp(15px, 1.35vw, 18px); line-height: 1.65; margin-top: 24px; }
+.reveal-row { margin-top: 26px; gap: 12px; align-items: flex-start; flex-direction: column; }
+.cta { padding: 14px 20px; font-size: 14px; box-shadow: none; }
+.cta span { margin-left: 20px; }
+.punchline { max-width: 450px; font-size: 13px; line-height: 1.5; }
+.punchline:not(.visible) { display: none; }
+.art-stage::before { width: min(96%, 52vh); height: auto; background: radial-gradient(circle, color-mix(in srgb, var(--accent) 7%, var(--bg)), var(--bg)); border-radius: 50%; transform: none; }
+.art-stage .mascot { inset: 7% 0; width: 100%; height: 86%; }
+.symbol { width: 64px; height: 64px; font-size: 21px; top: 18%; left: 0; box-shadow: none; }
+.sticker { top: 20%; right: 0; padding: 15px 18px; min-width: 118px; border-radius: 16px 16px 16px 4px; box-shadow: 0 14px 35px var(--shadow); }
+.sticker span { font-size: 10px; }.sticker strong { font-size: 14px; }
+.bottom-bar { align-items: center; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
+.footer-note { gap: 9px; }.footer-note p { font-size: 11px; line-height: 1.5; }
+.analytics-trigger { width: 28px; height: 28px; animation: none; background: transparent; }
+.progress { margin: 0; height: 2px; opacity: .7; }
+.controls button { padding: 11px 18px; font-size: 13px; background: transparent; }
+.controls .next { background: var(--text); box-shadow: none; }
+.x-card { width: 230px; min-height: 0; padding: 0; grid-template-columns: 36px minmax(0, 1fr); gap: 10px; align-items: center; border: 0; border-radius: 0; box-shadow: none; backdrop-filter: none; background: transparent; }
+.x-avatar-wrap { width: 34px; height: 34px; }.x-avatar-wrap img { border-width: 1px; filter: none; }
+.x-main { padding: 0; }.x-main h2 { font-size: 13px; }.x-handle { font-size: 10px; margin-top: 3px; }
+.x-card-top { top: 6px; right: 0; }.x-logo { width: 16px; height: 16px; }.verified-badge { width: 13px; height: 13px; }
+.x-card:hover, .x-card:focus-visible { border: 0; box-shadow: none; opacity: 1; }
+.social-links { align-self: center; font-size: 9px; gap: 22px; letter-spacing: .13em; }
+@media (max-width: 900px) and (orientation: portrait) {
+ .app-shell { grid-template-columns: minmax(0,1fr) auto; grid-template-rows: auto minmax(0,1fr) auto auto; padding: max(16px, env(safe-area-inset-top)) 20px max(14px, env(safe-area-inset-bottom)); gap: 12px; }
+ .topbar { padding-bottom: 12px; gap: 8px; }
+ .brand { font-size: 11px; }
+ .story-scene { grid-template-columns: minmax(0,1fr); gap: 12px; padding: 8px 0; }
+ .kicker { margin: 0; font-size: 9px; gap: 8px; }.kicker span { width: 22px; height: 22px; }
+ h1 { font-size: clamp(29px, 8.2vw, 48px); line-height: 1; }
+ .art-stage::before { width: auto; height: 94%; max-width: 96%; }
+ .art-stage .mascot { inset: 2% 0; height: 96%; }
+ .symbol { width: 42px; height: 42px; font-size: 15px; left: 0; top: 18%; }
+ .sticker { min-width: 84px; padding: 10px 12px; top: 16%; right: 0; border-radius: 12px 12px 12px 3px; }
+ .sticker span { font-size: 8px; }.sticker strong { font-size: 11px; }
+ .story-body { font-size: clamp(12px, 3.55vw, 16px); line-height: 1.5; margin: 0; }
+ .reveal-row { margin: 0; gap: 6px; }.cta { font-size: 13px; padding: 11px 16px; }
+ .punchline { font-size: 11px; line-height: 1.4; }
+ .bottom-bar { padding-bottom: 10px; gap: 8px; }.controls button { padding: 9px 15px; }
+ .footer-note p { font-size: 9px; }.analytics-trigger { width: 24px; height: 24px; }
+ .x-card { width: 170px; margin: 0; grid-template-columns: 30px minmax(0,1fr); gap: 7px; }.x-avatar-wrap { width: 28px; height: 28px; }
+ .x-main h2 { font-size: 11px; }.x-handle { font-size: 9px; }.x-card-top { display: none; }
+ .social-links { gap: 12px; font-size: 8px; justify-content: flex-end; }
+}
+@media (max-height: 740px) and (orientation: landscape) {
+ .app-shell { padding: 14px 28px; gap: 10px; }.topbar { padding-bottom: 10px; }
+ .story-scene { grid-template-columns: minmax(0,1.1fr) minmax(0,1fr); gap: 32px; padding: 6px 0; }
+ .story-copy { display: block; }.kicker { margin-bottom: 12px; font-size: 9px; }
+ h1 { font-size: clamp(28px, 4.1vw, 54px); }.story-body { margin-top: 14px; font-size: clamp(12px, 1.3vw, 16px); line-height: 1.5; }
+ .reveal-row { margin-top: 14px; gap: 7px; }.cta { padding: 10px 16px; font-size: 12px; }.punchline { font-size: 11px; }
+ .art-stage::before { width: min(95%, 52vh); height: auto; }.symbol { width: 48px; height: 48px; font-size: 16px; }
+ .sticker { min-width: 90px; padding: 10px 12px; }.sticker strong { font-size: 12px; }
+ .bottom-bar { padding-bottom: 10px; }.footer-note p { font-size: 10px; }.controls button { padding: 8px 14px; }
+}
+@media (max-height: 650px) and (orientation: portrait) {
+ .app-shell { padding: 10px 14px; gap: 7px; }.topbar { padding-bottom: 8px; gap: 5px; }
+ .story-scene { gap: 7px; padding: 2px 0; }h1 { font-size: 27px; }.story-body { font-size: 12px; line-height: 1.4; }
+ .kicker { font-size: 8px; }.kicker span { width: 20px; height: 20px; }.cta { padding: 9px 14px; font-size: 12px; }
+ .bottom-bar { gap: 5px; padding-bottom: 7px; }.controls button { padding: 7px 13px; font-size: 12px; }
+ .footer-note p { font-size: 8px; }.punchline { font-size: 10px; }.symbol { width: 32px; height: 32px; font-size: 12px; }
+ .sticker { min-width: 72px; padding: 8px; }.sticker strong { font-size: 10px; }
+}
+@media (max-height: 450px) and (orientation: landscape) {
+ .app-shell { padding: 8px 20px; gap: 6px; }.topbar { padding-bottom: 6px; }.kicker { margin-bottom: 6px; }
+ h1 { font-size: 27px; }.story-body { font-size: 12px; margin-top: 8px; line-height: 1.4; }
+ .reveal-row { margin-top: 8px; }.cta { padding: 7px 12px; }.punchline { font-size: 10px; }
+ .bottom-bar { padding-bottom: 6px; }.controls button { padding: 6px 12px; }.x-avatar-wrap { width: 26px; height: 26px; }
+ .x-card { grid-template-columns: 28px minmax(0,1fr); }.x-main h2 { font-size: 11px; }.x-handle { font-size: 9px; }
+}
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
 }
