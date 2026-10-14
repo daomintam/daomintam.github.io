@@ -1,7 +1,6 @@
-import type { CSSProperties } from 'react'
+const moods = ['hello', 'focus', 'work', 'phone', 'tea', 'music', 'sleep']
+const labels = ['chào ngày mới', 'quyết tâm', 'làm việc', 'lướt điện thoại', 'uống trà sữa', 'nghe nhạc', 'ngủ ngon']
 
 export function MoodSprite({ pose, className = '' }: { pose: number; className?: string }) {
-  const row = Math.floor(pose / 5), col = pose % 5
-  const edges = [0, 272, 514, 768, 1024], height = edges[row + 1] - edges[row]
-  return <span role="img" aria-label={`Biểu cảm TΛM ${pose + 1}`} className={`mood-sprite ${className}`} style={{ aspectRatio: `307.2 / ${height}`, backgroundSize: `500% ${1024 / height * 100}%`, backgroundPosition: `${col * 25}% ${edges[row] / (1024 - height) * 100}%` } as CSSProperties} />
+  return <img className={`mood-sprite ${className}`} src={`/img/moods/${moods[pose] ?? moods[0]}.png`} alt={`TΛM ${labels[pose] ?? labels[0]}`} width={1254} height={1254} draggable={false} decoding="async" />
 }

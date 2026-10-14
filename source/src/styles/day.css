@@ -1,4 +1,4 @@
-.mood-sprite { display:block; background-image:url('/img/mood-board.png'); background-repeat:no-repeat; width:100%; flex-shrink:0; }
+.mood-sprite { display:block; width:100%; flex-shrink:0; }
 .day-app { --ink:#f4eee5; --acid:#d7f89a; color:var(--ink); width:100%; height:100dvh; overflow:hidden; background:#141918; display:grid; grid-template-rows:auto minmax(0,1fr) auto auto; padding:26px max(24px,calc((100vw - 1280px)/2)); gap:20px; font-family:'Bricolage Grotesque','Segoe UI',sans-serif; }
 .day-app button,.day-app a { touch-action:manipulation; }.day-app button:focus-visible,.day-app a:focus-visible,.day-rail:focus-visible { outline:2px solid var(--acid); outline-offset:4px; }
 .day-header { display:flex; align-items:center; justify-content:space-between; gap:16px; border-bottom:1px solid #ffffff20; padding-bottom:20px; }.day-header a { font:700 12px 'Space Mono',monospace; }.day-header a span { color:#7d8b77; }.day-header > span { font:9px 'Space Mono',monospace; letter-spacing:.08em; color:#99a297; }.day-header b { font-size:12px; display:flex; align-items:center; gap:10px; }.day-live { background:var(--acid); width:6px; height:6px; border-radius:50%; }
@@ -10,6 +10,16 @@
 @media(max-width:750px) and (max-height:700px) { .day-app { gap:10px; padding:12px 16px; }.day-scene { gap:10px; }.day-copy h1 { font-size:29px; }.day-prose { font-size:12px; margin:8px 0 10px; }.day-eyebrow { margin-bottom:7px; }.day-choices button { padding:9px 10px; font-size:10px; }.day-status { font-size:8px; padding:5px 10px; }.day-sticker { padding:6px 9px; font-size:9px; }.day-footer { font-size:7px; }.day-art { max-width:260px; } }
 @media(min-width:751px) and (max-height:650px) { .day-app { padding-block:14px; gap:12px; }.day-copy h1 { font-size:42px; }.day-prose { font-size:13px; margin:14px 0; }.day-eyebrow { margin-bottom:12px; }.day-choices button { padding:10px 14px; }.day-art { height:100%; max-height:350px; }.day-header { padding-bottom:12px; } }
 @media(max-height:450px) { .day-app { gap:8px; padding:10px 20px; }.day-scene { grid-template-columns:1.2fr 1fr; grid-template-rows:1fr; gap:18px; max-width:900px; }.day-copy { grid-row:1; }.day-art { grid-column:2; grid-row:1; max-height:220px; }.day-copy h1 { font-size:27px; }.day-prose { font-size:11px; margin:8px 0; }.day-eyebrow { font-size:7px; margin-bottom:7px; }.day-choices { grid-template-columns:1fr 1fr; gap:5px; }.day-choices > span { display:none; }.day-choices button { padding:7px 9px; font-size:9px; }.day-sticker { font-size:8px; padding:5px 8px; }.day-status { font-size:8px; padding:5px 8px; }.day-header { padding-bottom:8px; }.day-footer { padding-top:8px; }.day-navigation button { padding:6px 12px; }.day-navigation b { font-size:15px; } }
-.mood-sprite { clip-path:inset(0 2%); }
+
 @media(max-width:600px) and (max-height:700px) { .atlas-hub .topic-card p { display:none; }.atlas-hub .hub-main { gap:12px; }.atlas-hub .topic-card-content { min-height:74px; }.atlas-hub .topic-archive { font-size:8px; }.atlas-hub .hub-description { max-width:320px; } }
 @media(max-height:450px) { .atlas-hub .topic-card p { display:none; }.atlas-hub .topic-card-bottom { display:none; }.atlas-hub .topic-card-content { min-height:64px; }.atlas-hub .topic-mascot { height:68px; }.atlas-hub .topic-archive { font-size:8px; } }
+/* Each pose is a full-resolution standalone image, never a sprite crop. */
+.mood-sprite { background:none; clip-path:none; aspect-ratio:1; object-fit:contain; }
+.day-art .mood-sprite { width:100%; height:100%; object-fit:contain; }
+.topic-day .mood-sprite { height:165px; }
+@media(max-height:800px) and (min-width:901px) { .topic-day .mood-sprite { height:125px; } }
+@media(max-width:900px) { .topic-day .mood-sprite { height:120px; } }
+@media(max-width:600px) and (max-height:750px) { .topic-day .mood-sprite { height:95px; } }
+@media(max-width:350px) and (max-height:600px) { .topic-day .mood-sprite { height:78px; } }
+@media(max-height:450px) { .topic-day .mood-sprite { height:68px; } }
+.day-slide { overflow:hidden; }

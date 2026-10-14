@@ -23,11 +23,11 @@ export default function DayStories() {
       {dayScenes.map((scene, index) => <section key={index} className="day-slide" aria-hidden={active !== index} ref={node => { if (node) node.inert = active !== index }}>
         <article className="day-scene">
           <div className="day-copy"><p className="day-eyebrow">NHẬT KÝ HƯ CẤU <span>· {scene[0]}</span></p><h1>{scene[1]}</h1><p className="day-prose">{scene[2]}</p><div className="day-choices"><span>RỒI SAO NỮA?</span><button onClick={() => navigate(scene[6])}>{scene[5]} <i>↗</i></button><button onClick={() => navigate(scene[8])}>{scene[7]} <i>↗</i></button></div></div>
-          <div className="day-art"><span className="day-orbit" /><span className="day-sticker">{index === 19 ? 'MAI TÍNH!' : 'ĐỜI MÀ.'}</span><MoodSprite pose={scene[4]} /><span className="day-time">{scene[0]}</span><p className="day-status"><span />{scene[3]}</p></div>
+          <div className="day-art"><span className="day-orbit" /><span className="day-sticker">{index === dayScenes.length - 1 ? 'MAI TÍNH!' : 'ĐỜI MÀ.'}</span><MoodSprite pose={scene[4]} /><span className="day-time">{scene[0]}</span><p className="day-status"><span />{scene[3]}</p></div>
         </article>
       </section>)}
     </main>
-    <nav className="day-navigation" aria-label="Chuyển tình huống"><div><b>{String(active + 1).padStart(2, '0')}</b><span>/ 20</span><small>Kéo ngang. Đi chậm thôi.</small></div><div><button aria-label="Tình huống trước" disabled={active === 0} onClick={() => navigate(active - 1)}>←</button><button onClick={() => navigate(active === 19 ? 0 : active + 1)}>{active === 19 ? 'Ngày mới' : 'Tiếp theo'} →</button></div></nav>
-    <footer className="day-footer"><span className="day-collected">Đã gặp {visited.size}/20 phiên bản của mình</span><div className="day-progress" aria-hidden="true">{dayScenes.map((_, i) => <span key={i} className={`${visited.has(i) ? 'seen' : ''} ${active === i ? 'current' : ''}`} />)}</div><a href="#/">Chọn chuyện khác ↗</a></footer>
+    <nav className="day-navigation" aria-label="Chuyển tình huống"><div><b>{String(active + 1).padStart(2, '0')}</b><span>/ {String(dayScenes.length).padStart(2, '0')}</span><small>Kéo ngang. Đi chậm thôi.</small></div><div><button aria-label="Tình huống trước" disabled={active === 0} onClick={() => navigate(active - 1)}>←</button><button onClick={() => navigate(active === dayScenes.length - 1 ? 0 : active + 1)}>{active === dayScenes.length - 1 ? 'Ngày mới' : 'Tiếp theo'} →</button></div></nav>
+    <footer className="day-footer"><span className="day-collected">Đã gặp {visited.size}/{dayScenes.length} phiên bản của mình</span><div className="day-progress" aria-hidden="true">{dayScenes.map((_, i) => <span key={i} className={`${visited.has(i) ? 'seen' : ''} ${active === i ? 'current' : ''}`} />)}</div><a href="#/">Chọn chuyện khác ↗</a></footer>
   </div>
 }
