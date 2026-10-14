@@ -6,7 +6,7 @@ Each chapter fits within one viewport on desktop, laptop, tablet and phone. Use 
 
 On supported touch devices, use the phone icon in the footer to enable device tilt. Permission is requested only after tapping it; motion is processed locally, can be switched off, and is disabled when reduced motion is preferred. Sensor access requires a secure context (HTTPS in deployment).
 
-Chapter artwork is editable vector SVG in `source/public/img/chapters/`: `midnight.svg`, `giggles.svg`, `hello.svg` and `together.svg`. The matching files in `img/chapters/` are the GitHub Pages copies. Chapter buttons glide for 2.3 seconds; wheel sensitivity and release momentum are intentionally restrained.
+The original character artwork is preserved in `source/public/img/me.svg` and `img/me.svg`. Chapter buttons glide for 2.3 seconds; wheel sensitivity and release momentum are intentionally restrained.
 
 ## Development
 
