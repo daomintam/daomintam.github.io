@@ -70,7 +70,7 @@ export async function trackVisit() {
   sessionStorage.setItem('tamverse-visit-sent', '1')
 }
 
-export async function loadSummary(): Promise<AnalyticsSummary> {
+export async function loadSummary(days = 7): Promise<AnalyticsSummary> {
   if (!analyticsReady()) throw new Error('Analytics is not configured')
-  return request({ action: 'summary', days: 7 })
+  return request({ action: 'summary', days })
 }

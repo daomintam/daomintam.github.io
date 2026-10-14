@@ -27,7 +27,7 @@ language sql
 security definer
 set search_path = public
 as $$
-  with limits as (select greatest(1, least(p_days, 30))::integer as n),
+  with limits as (select greatest(1, least(p_days, 365))::integer as n),
   range_days as (
     select generate_series(current_date - ((select n from limits) - 1), current_date, interval '1 day')::date as day
   ),

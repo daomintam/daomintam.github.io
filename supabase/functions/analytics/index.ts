@@ -18,7 +18,7 @@ Deno.serve(async (request) => {
     const body = await request.json()
 
     if (body.action === 'summary') {
-      const { data, error } = await db.rpc('analytics_summary', { p_days: Math.min(Math.max(Number(body.days) || 7, 1), 30) })
+      const { data, error } = await db.rpc('analytics_summary', { p_days: Math.min(Math.max(Number(body.days) || 7, 1), 365) })
       if (error) throw error
       return json(data)
     }
