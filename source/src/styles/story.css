@@ -82,7 +82,7 @@ button:focus-visible, a:focus-visible { outline: 3px solid var(--accent, #9fd8bf
 .brand:hover { transform: translateX(4px); text-shadow: 0 0 22px color-mix(in srgb, var(--accent, #9fd8bf) 55%, transparent); }
 .brand span { color: var(--muted); }
 .brand strong { letter-spacing: .09em; }
-.chapters { display: flex; gap: 9px; transform: translateX(-10px); }
+.chapters { display: flex; gap: 2px; padding: 3px; width: max-content; border: 1px solid var(--border); border-radius: 999px; background: var(--surface); }
 .top-actions { display: flex; align-items: center; gap: 9px; }
 .chapters button, .theme-toggle, .language-toggle {
   width: 52px; height: 52px; border-radius: 50%; border: 1px solid var(--border); background: transparent; cursor: pointer;
@@ -90,8 +90,8 @@ button:focus-visible, a:focus-visible { outline: 3px solid var(--accent, #9fd8bf
   transition: transform .25s ease, background .25s ease, color .25s ease, border-color .25s ease;
 }
 .chapters button:hover, .theme-toggle:hover, .language-toggle:hover { transform: translateY(-3px); border-color: var(--text); }
-.chapters button.active { background: var(--chapter-color); color: #101412; border-color: transparent; transform: rotate(-8deg); font-weight: 800; }
-.chapters button.active { animation: active-chapter 2.8s ease-in-out infinite; box-shadow: 0 0 0 0 color-mix(in srgb, var(--chapter-color) 45%, transparent); }
+.chapters button { width: 38px; height: 36px; border: 0; border-radius: 999px; font-size: 11px; color: var(--muted); }
+.chapters button.active { background: var(--chapter-color); color: #101412; font-weight: 800; }
 @keyframes active-chapter { 50% { box-shadow: 0 0 0 7px transparent, 0 10px 28px color-mix(in srgb, var(--chapter-color) 25%, transparent); transform: rotate(-4deg) translateY(-2px); } }
 .theme-toggle { font-size: 21px; background: var(--surface); }
 .theme-toggle:hover { transform: translateY(-3px) rotate(18deg); box-shadow: 0 0 26px color-mix(in srgb, var(--accent, #9fd8bf) 28%, transparent); }
@@ -269,10 +269,10 @@ h1 { font-family: "Bricolage Grotesque", sans-serif; font-size: clamp(38px, 5.6v
   html { overflow: auto; }
   body { min-width: 0; }
   .app-shell { height: auto; min-height: 100svh; padding: max(16px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) max(32px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left)); overflow-x: clip; overflow-y: visible; display: block; }
-  .topbar { grid-template-columns: 1fr auto; gap: 14px; }
+  .topbar { grid-template-columns: 1fr auto; gap: 8px; }
   .brand span { display: none; }
-  .chapters { grid-column: 1 / -1; grid-row: 2; justify-content: space-between; margin-top: 2px; transform: none; }
-  .chapters button { width: 44px; height: 44px; }
+  .chapters { grid-column: 1 / -1; grid-row: 2; justify-content: flex-start; margin-top: 0; transform: none; }
+  .chapters button { width: 38px; height: 36px; }
   .top-actions { grid-column: 2; grid-row: 1; }
   .theme-toggle, .language-toggle { width: 44px; height: 44px; }
   .story-scene { grid-template-columns: 1fr; gap: 20px; padding: 22px 0 10px; min-height: auto; top: 0; }
@@ -309,7 +309,7 @@ h1 { font-family: "Bricolage Grotesque", sans-serif; font-size: clamp(38px, 5.6v
 
 @media (max-width: 360px) {
   .app-shell { padding-inline: 14px; }
-  .chapters button { width: 43px; height: 43px; }
+  .chapters button { width: 38px; height: 36px; }
   .art-stage { min-height: 0; }
   .x-card { grid-template-columns: 94px minmax(0,1fr); padding-inline: 8px 12px; }
   .x-avatar-wrap { width: 94px; height: 94px; }
