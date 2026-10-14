@@ -15,4 +15,3 @@ Use case: illustration-story. Create ONE standalone high resolution square trans
 - `tea.png`: holding bubble milk tea and sipping through straw, matching third row second pose.
 - `music.png`: eyes closed listening with large black over-ear headphones, matching second row fifth pose.
 - `sleep.png`: sleeping with head resting on folded sleeves, matching top row fifth pose.
-
