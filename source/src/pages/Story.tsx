@@ -1,3 +1,4 @@
+import { AnalyticsWidget } from '../components/AnalyticsWidget'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { chapters, chaptersVi } from '../data/tamverseChapters'
 import { StoryTopBar } from '../components/StoryTopBar'
@@ -84,6 +85,7 @@ export default function Story() {
       <a href="https://www.tiktok.com/@mintamdao" target="_blank" rel="noreferrer">TikTok</a>
       <a href="https://github.com/daomintam" target="_blank" rel="noreferrer">GitHub</a>
       <a href={xProfile.url} target="_blank" rel="noreferrer">X</a>
+      <AnalyticsWidget language={language} />
     </aside>
   </div>
 }

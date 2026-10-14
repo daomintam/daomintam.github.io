@@ -250,3 +250,27 @@ h1 { font-size: clamp(38px, 5vw, 76px); font-weight: 750; font-variation-setting
  .profile-slot { --card-scale: .72; }
  h1 { font-size: 50px; }
 }
+/* Footer tools belong with the social links. Keep the dialog outside their layout. */
+.social-links { align-items: center; }
+.social-links .analytics-trigger { width: 28px; height: 28px; }
+.social-links .analytics-overlay { color: var(--text); font-family: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif; font-size: 16px; letter-spacing: normal; text-transform: none; }
+@media (max-width: 600px) and (max-height: 750px) and (orientation: portrait) {
+ .story-scene { grid-template-columns: minmax(0,1fr) minmax(110px,38%); grid-template-rows: auto minmax(0,1fr) auto; gap: 10px 12px; }
+ .story-heading { grid-column: 1 / -1; grid-row: 1; align-self: start; }
+ .story-heading .kicker { margin-bottom: 9px; font-size: 8px; }
+ h1 { font-size: clamp(27px,7.4vw,36px); }
+ .story-body { grid-column: 1; grid-row: 2; align-self: center; font-size: clamp(11.5px,3.3vw,14px); line-height: 1.45; }
+ .art-stage { grid-column: 2; grid-row: 2; }
+ .art-index { font-size: 80px; top: 0; }
+ .art-orbit { inset: 10% 0; }.art-figure { inset: 0 -5%; }
+ .reveal-row { grid-column: 1 / -1; grid-row: 3; }
+ .profile-slot { --card-scale: .66; }
+ .footer-note p { font-size: 8px; }
+ .bottom-bar { gap: 7px; }
+}
+@media (max-width: 350px) and (max-height: 600px) and (orientation: portrait) {
+ .story-scene { gap: 7px 10px; grid-template-columns: minmax(0,1fr) 110px; }
+ .story-heading .kicker { font-size: 7px; margin-bottom: 6px; }
+ h1 { font-size: 25px; }.story-body { font-size: 11px; line-height: 1.35; }
+ .profile-slot { --card-scale: .55; }
+}
