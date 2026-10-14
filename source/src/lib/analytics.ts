@@ -38,7 +38,7 @@ function device() {
 
 function source() {
   const params = new URLSearchParams(location.search)
-  const tagged = params.get('utm_source')
+  const tagged = params.get('platform') || params.get('utm_source')
   if (tagged) return tagged.slice(0, 80).toLowerCase()
   if (!document.referrer) return 'direct'
   try { return new URL(document.referrer).hostname.replace(/^www\./, '').slice(0, 80) }
