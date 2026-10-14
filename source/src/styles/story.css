@@ -313,3 +313,12 @@ h1 { font-size: clamp(38px, 5vw, 76px); font-weight: 750; font-variation-setting
  .story-body { font-size: 11px; line-height: 1.35; }.profile-slot { --card-scale: .5; }
 }
 @media (prefers-reduced-motion: reduce) { .story-scene, .profile-slot { rotate: none; } }
+/* All chapters share a real, draggable horizontal strip. */
+.story-rail { grid-column: 1 / -1; min-width: 0; min-height: 0; height: 100%; display: flex; overflow: hidden; touch-action: pan-y pinch-zoom; cursor: grab; scrollbar-width: none; }
+.story-rail::-webkit-scrollbar { display: none; }
+.story-slide { flex: 0 0 100%; width: 100%; min-width: 0; height: 100%; overflow: hidden; }
+.story-rail[data-dragging="true"] { cursor: grabbing; user-select: none; }
+.story-rail .story-scene { width: 100%; }
+
+.story-rail:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+.story-slide[aria-hidden="true"] .mascot { animation-play-state: paused; }

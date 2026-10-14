@@ -1,9 +1,9 @@
 import type { CSSProperties, PointerEvent } from 'react'
 import type { Chapter } from '../data/tamverseChapters'
 
-type Props = { chapter: Chapter; index: number; total: number; direction: 'next' | 'prev'; revealed: boolean; onReveal: () => void; mascotBounce: boolean; language: 'en' | 'vi' }
+type Props = { chapter: Chapter; index: number; total: number; revealed: boolean; onReveal: () => void; mascotBounce: boolean; language: 'en' | 'vi' }
 
-export function StoryScene({ chapter, index, total, direction, revealed, onReveal, mascotBounce, language }: Props) {
+export function StoryScene({ chapter, index, total, revealed, onReveal, mascotBounce, language }: Props) {
   const vi = language === 'vi'
   const number = String(index + 1).padStart(2, '0')
   const tilt = (event: PointerEvent<HTMLElement>) => {
@@ -16,11 +16,11 @@ export function StoryScene({ chapter, index, total, direction, revealed, onRevea
     event.currentTarget.style.setProperty('--tilt-x', '0deg')
     event.currentTarget.style.setProperty('--tilt-y', '0deg')
   }
-  return <main id="story" className={`story-scene enter-${direction}`} style={{ '--accent': chapter.color } as CSSProperties}>
-    <section className="story-copy" aria-labelledby="story-title">
+  return <article className="story-scene" style={{ '--accent': chapter.color } as CSSProperties}>
+    <section className="story-copy" aria-labelledby={`story-title-${index}`}>
       <div className="story-heading">
       <p className="kicker"><span>{number} / {String(total).padStart(2, '0')}</span>{chapter.kicker}</p>
-      <h1 id="story-title">{chapter.title}</h1>
+      <h1 id={`story-title-${index}`}>{chapter.title}</h1>
       </div>
       <p className="story-body">{chapter.body}</p>
       <div className="reveal-row">
@@ -37,5 +37,5 @@ export function StoryScene({ chapter, index, total, direction, revealed, onRevea
       <div className="sticker" aria-hidden="true"><span>{chapter.sticker[0]}</span><strong>{chapter.sticker[1]}</strong><i>✳</i></div>
       <p className="art-caption" aria-hidden="true"><span>✳</span> {vi ? 'MỘT CHÚT TÒ MÒ. CẢ VŨ TRỤ.' : 'A LITTLE CURIOUS. A WHOLE UNIVERSE.'}</p>
     </section>
-  </main>
+  </article>
 }

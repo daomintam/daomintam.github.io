@@ -1,6 +1,7 @@
+import { useChapterRail } from '../lib/useChapterRail'
 import { DeviceTilt } from '../components/DeviceTilt'
 import { AnalyticsWidget } from '../components/AnalyticsWidget'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { chapters, chaptersVi } from '../data/tamverseChapters'
 import { StoryTopBar } from '../components/StoryTopBar'
 import { StoryScene } from '../components/StoryScene'
@@ -10,27 +11,16 @@ import { xProfile } from '../data/xProfile'
 
 export default function Story() {
   const [active, setActive] = useState(0)
-  const [direction, setDirection] = useState<'next' | 'prev'>('next')
   const [revealed, setRevealed] = useState(false)
   const [bouncing, setBouncing] = useState(false)
   const [dark, setDark] = useState(() => localStorage.getItem('tamverse-theme') !== 'light')
   const [language, setLanguage] = useState<'en' | 'vi'>(() => localStorage.getItem('tamverse-language') === 'vi' ? 'vi' : 'en')
-  const locked = useRef(false)
-  const touchX = useRef(0)
-  const touchY = useRef(0)
-  const wheelGesture = useRef({ last: 0, distance: 0, handled: false })
-
-  const navigate = useCallback((next: number, dir?: 'next' | 'prev') => {
-    if (locked.current || next === active) return
-    locked.current = true
-    setDirection(dir ?? (next > active ? 'next' : 'prev'))
-    setActive((next + chapters.length) % chapters.length)
-    setRevealed(false)
-    window.setTimeout(() => { locked.current = false }, 950)
-  }, [active])
-
-  const next = useCallback(() => navigate(active === chapters.length - 1 ? 0 : active + 1, 'next'), [active, navigate])
-  const prev = useCallback(() => active > 0 && navigate(active - 1, 'prev'), [active, navigate])
+  const changeActive = useCallback((index: number) => {
+    setActive(index); setRevealed(false); setBouncing(false)
+  }, [])
+  const { rail, navigate, ...dragHandlers } = useChapterRail(changeActive, chapters.length)
+  const next = useCallback(() => navigate(active === chapters.length - 1 ? 0 : active + 1), [active, navigate])
+  const prev = useCallback(() => navigate(active - 1), [active, navigate])
 
   useEffect(() => {
     document.documentElement.dataset.theme = dark ? 'dark' : 'light'
@@ -43,29 +33,13 @@ export default function Story() {
   }, [language])
 
   useEffect(() => {
-    const wheel = (event: WheelEvent) => {
-      if (event.ctrlKey || document.querySelector('.analytics-overlay')) return
-      event.preventDefault()
-      const now = performance.now()
-      const gesture = wheelGesture.current
-      if (now - gesture.last > 180) { gesture.distance = 0; gesture.handled = false }
-      gesture.last = now
-      if (gesture.handled || locked.current) return
-      const delta = Math.abs(event.deltaX) > Math.abs(event.deltaY) ? event.deltaX : event.deltaY
-      const unit = event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? window.innerHeight : 1
-      gesture.distance += delta * unit
-      if (Math.abs(gesture.distance) < 48) return
-      gesture.handled = true
-      gesture.distance > 0 ? next() : prev()
-    }
     const key = (event: KeyboardEvent) => {
       if (document.querySelector('.analytics-overlay') || (event.target instanceof HTMLElement && event.target.closest('button, a, input, textarea, select, [contenteditable]'))) return
-      if (['ArrowRight', 'ArrowDown', 'PageDown'].includes(event.key)) next()
-      if (['ArrowLeft', 'ArrowUp', 'PageUp'].includes(event.key)) prev()
+      if (['ArrowRight', 'ArrowDown', 'PageDown'].includes(event.key)) { event.preventDefault(); next() }
+      if (['ArrowLeft', 'ArrowUp', 'PageUp'].includes(event.key)) { event.preventDefault(); prev() }
     }
-    window.addEventListener('wheel', wheel, { passive: false })
     window.addEventListener('keydown', key)
-    return () => { window.removeEventListener('wheel', wheel); window.removeEventListener('keydown', key) }
+    return () => window.removeEventListener('keydown', key)
   }, [next, prev])
 
   const reveal = () => {
@@ -76,10 +50,14 @@ export default function Story() {
 
   const localizedChapters = language === 'vi' ? chaptersVi : chapters
 
-  return <div className="app-shell" style={{ '--accent': localizedChapters[active].color } as React.CSSProperties} onTouchStart={(e) => { touchX.current = e.changedTouches[0].clientX; touchY.current = e.changedTouches[0].clientY }} onTouchEnd={(e) => { const delta = e.changedTouches[0].clientX - touchX.current; if (!(e.target instanceof Element && e.target.closest('.analytics-overlay')) && Math.abs(delta) >= 45 && Math.abs(delta) > Math.abs(e.changedTouches[0].clientY - touchY.current) * 1.5) delta < 0 ? next() : prev() }}>
+  return <div className="app-shell" style={{ '--accent': localizedChapters[active].color } as React.CSSProperties}>
     <div className="ambient-motion" aria-hidden="true"><i /><i /><i /><i /></div>
     <StoryTopBar chapters={localizedChapters} active={active} onSelect={(index) => navigate(index)} dark={dark} onTheme={() => setDark((value) => !value)} language={language} onLanguage={() => setLanguage((value) => value === 'en' ? 'vi' : 'en')} />
-    <StoryScene index={active} total={localizedChapters.length} key={`${active}-${language}`} chapter={localizedChapters[active]} direction={direction} revealed={revealed} onReveal={reveal} mascotBounce={bouncing} language={language} />
+    <div id="story" role="main" tabIndex={0} aria-label={language === 'vi' ? 'Câu chuyện TΛMVERSE, kéo ngang để khám phá' : 'TΛMVERSE story, drag horizontally to explore'} className="story-rail" ref={rail} {...dragHandlers}>
+      {localizedChapters.map((chapter, index) => <div className="story-slide" key={index} aria-hidden={index !== active} ref={(node) => { if (node) node.inert = index !== active }}>
+        <StoryScene index={index} total={localizedChapters.length} chapter={chapter} revealed={index === active && revealed} onReveal={reveal} mascotBounce={index === active && bouncing} language={language} />
+      </div>)}
+    </div>
     <StoryControls active={active} total={localizedChapters.length} onPrev={prev} onNext={next} language={language} />
     <div className="profile-slot"><XProfileCard language={language} /></div>
     <aside className="social-links" aria-label={language === 'vi' ? 'Mạng xã hội' : 'Social profiles'}>
