@@ -20,7 +20,7 @@ export default function DayStories() {
   }, [active, navigate])
   const themeStyle = (index: number) => ({ '--acid': dayThemes[index].accent, '--day-bg': dayThemes[index].background, '--day-glow': dayThemes[index].glow } as CSSProperties)
   return <div className="day-app" style={themeStyle(active)}>
-    <header className="day-header"><a href="#/" aria-label="Về trang chủ đề">TΛM <span>/</span> ATLAS ↗</a><span>MỘT NGÀY KHÔNG QUÁ NGHIÊM TÚC</span><b>Não mở 20 tab<span className="day-live" /></b></header>
+    <header className="day-header"><a href="#/" aria-label="Về trang chủ đề">TΛM <span>/</span> ATLAS ↗</a><span>MỘT NGÀY KHÔNG QUÁ NGHIÊM TÚC</span><b>Một ngày, bảy sắc thái<span className="day-live" /></b></header>
     <main className="day-rail" ref={rail} {...drag} tabIndex={0} aria-label="Kéo ngang khám phá một ngày của TΛM">
       {dayScenes.map((scene, index) => <section key={index} className="day-slide" style={themeStyle(index)} data-scene={index} aria-hidden={active !== index} ref={node => { if (node) node.inert = active !== index }}>
         <article className="day-scene">
