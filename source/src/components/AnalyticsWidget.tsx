@@ -18,6 +18,24 @@ function Ranking({ title, values }: { title: string; values: { label: string; va
   </div>) : <p>No data yet</p>}</section>
 }
 
+function Calendar30({ days }: { days: AnalyticsSummary['daily'] }) {
+  const firstDate = days[0] ? new Date(`${days[0].date}T00:00:00`) : null
+  const blanks = firstDate ? firstDate.getDay() : 0
+  return <section className="analytics-calendar"><h3>Last 30 days</h3>
+    <div className="calendar-weekdays" aria-hidden="true">{['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => <span key={day}>{day}</span>)}</div>
+    <div className="calendar-grid">
+      {Array.from({ length: blanks }, (_, index) => <i className="calendar-blank" key={`blank-${index}`} />)}
+      {days.map((item) => {
+        const date = new Date(`${item.date}T00:00:00`)
+        const detail = `${date.toLocaleDateString('en', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })} · ${item.views.toLocaleString()} ${item.views === 1 ? 'visit' : 'visits'}`
+        return <article className={item.views ? 'has-visits' : ''} key={item.date} tabIndex={0} aria-label={detail} data-tooltip={detail}>
+          <span>{date.getDate()}</span><strong>{item.views}</strong>
+        </article>
+      })}
+    </div>
+  </section>
+}
+
 export function AnalyticsWidget() {
   const [open, setOpen] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -55,7 +73,7 @@ export function AnalyticsWidget() {
         <div className="analytics-ranges" aria-label="Analytics period">{ranges.map((item) => <button className={range.days === item.days ? 'active' : ''} key={item.days} onClick={() => setRange(item)}>{item.label}</button>)}</div>
         {!configured ? <div className="analytics-setup"><strong>Supabase setup required</strong><p>The dashboard is ready. Add your project URL and publishable key to <code>analytics-config.js</code> after completing the included setup guide.</p></div> : loading ? <p className="analytics-state">Loading signals…</p> : error ? <p className="analytics-state">{error}</p> : <>
           <div className="analytics-totals"><article><strong>{data.total.toLocaleString()}</strong><span>Total visits</span></article><article><strong>{data.today.toLocaleString()}</strong><span>Today</span></article></div>
-          <section className="analytics-days"><h3>Last {range.label}</h3><div style={{ gridTemplateColumns: `repeat(${chart.length}, minmax(18px, 1fr))` }}>{chart.map((item) => <article key={item.key}><i style={{ height: `${Math.max(8, item.value / chartMax * 100)}%` }} /><span>{item.label}</span><b>{item.value}</b></article>)}</div></section>
+          {range.days === 30 ? <Calendar30 days={data.daily} /> : <section className="analytics-days"><h3>Last {range.label}</h3><div style={{ gridTemplateColumns: `repeat(${chart.length}, minmax(18px, 1fr))` }}>{chart.map((item) => <article key={item.key}><i style={{ height: `${Math.max(8, item.value / chartMax * 100)}%` }} /><span>{item.label}</span><b>{item.value}</b></article>)}</div></section>}
           <div className="analytics-grid"><Ranking title="Countries" values={data.countries} /><Ranking title="Sources" values={data.sources} /><Ranking title="Platforms" values={data.platforms} /></div>
         </>}
         <p className="analytics-privacy">Anonymous counts only · IP addresses are not stored</p>
