@@ -28,7 +28,7 @@ export function StoryScene({ chapter, index, total, revealed, onReveal, mascotBo
         <p className={`punchline ${revealed ? 'visible' : ''}`} role="status">{revealed ? chapter.punchline : ''}</p>
       </div>
     </section>
-    <section className="art-stage" aria-label={vi ? 'Minh họa nhân vật TΛM' : 'TAM character artwork'} onPointerMove={tilt} onPointerLeave={resetTilt}>
+    <section className="art-stage" data-scene={index} aria-label={vi ? 'Minh họa nhân vật TΛM' : 'TAM character artwork'} onPointerMove={tilt} onPointerLeave={resetTilt}>
       <span className="art-index" aria-hidden="true">{number}</span>
       <div className="art-orbit" aria-hidden="true" />
       <div className="orb orb-one" aria-hidden="true" /><div className="orb orb-two" aria-hidden="true" />
