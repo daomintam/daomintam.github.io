@@ -6,7 +6,7 @@ type Props = { chapters: Chapter[]; active: number; onSelect: (index: number) =>
 export function StoryTopBar({ chapters, active, onSelect, dark, onTheme, language, onLanguage }: Props) {
   const vi = language === 'vi'
   return <header className="topbar">
-    <a className="brand" href="#story" aria-label={`${wordmark} home`}><span>{vi ? 'Một câu chuyện hư cấu' : 'A fictional story'}</span><strong>• {wordmark}</strong></a>
+    <a className="brand" href="#/" aria-label={vi ? 'Về trang chủ chọn chủ đề' : 'Back to all topics'}><span>{vi ? 'Một câu chuyện hư cấu' : 'A fictional story'}</span><strong>• {wordmark}</strong></a>
     <nav className="chapters" aria-label={vi ? 'Các chương truyện' : 'Story chapters'}>
       {chapters.map((chapter, index) => <button key={chapter.title} className={active === index ? 'active' : ''} style={{ '--chapter-color': chapter.color } as React.CSSProperties} onClick={() => onSelect(index)} aria-label={`${vi ? 'Chương' : 'Chapter'} ${index + 1}: ${chapter.title}`} aria-current={active === index ? 'step' : undefined}>{String(index + 1).padStart(2, '0')}</button>)}
     </nav>
