@@ -2,8 +2,9 @@ import { xProfile } from '../data/xProfile'
 
 export function XProfileCard({ language }: { language: 'en' | 'vi' }) {
   const vi = language === 'vi'
-  return <a className="x-card" href={xProfile.url} target="_blank" rel="noreferrer" title={`${xProfile.bio} · ${xProfile.location}`} aria-label={`${vi ? 'Mở' : 'Open'} ${xProfile.displayName} ${vi ? 'trên' : 'on'} X`}>
+  return <a className="x-card" href={xProfile.url} target="_blank" rel="noreferrer" aria-label={`${vi ? 'Mở' : 'Open'} ${xProfile.displayName} ${vi ? 'trên' : 'on'} X`}>
     <div className="x-avatar-wrap">
+      <span className="x-message" aria-hidden="true">HELLO<br />WEB3!</span>
       <img src="/img/x-avatar.jpg" alt={`${xProfile.displayName} X profile avatar`} />
     </div>
     <div className="x-main">
@@ -12,6 +13,9 @@ export function XProfileCard({ language }: { language: 'en' | 'vi' }) {
       </div>
       <div className="x-name-row"><h2>{xProfile.displayName}</h2>{xProfile.verified && <svg className="verified-badge" viewBox="0 0 22 22" role="img" aria-label={vi ? 'Tài khoản đã xác minh' : 'Verified account'}><circle cx="11" cy="11" r="10" /><path d="m6.7 11.2 2.7 2.7 5.9-6" /></svg>}</div>
       <p className="x-handle">{xProfile.handle}</p>
+      <p className="x-bio" title={xProfile.bio}>{xProfile.bio}</p>
+      <p className="x-location">{xProfile.location}</p>
+      <div className="x-stats"><span><strong>{xProfile.following}</strong> {vi ? 'Đang theo dõi' : 'Following'}</span><span><strong>{xProfile.followers}</strong> {vi ? 'Người theo dõi' : 'Followers'}</span></div>
     </div>
   </a>
 }

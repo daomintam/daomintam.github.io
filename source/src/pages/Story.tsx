@@ -70,7 +70,7 @@ export default function Story() {
     <StoryTopBar chapters={localizedChapters} active={active} onSelect={(index) => navigate(index)} dark={dark} onTheme={() => setDark((value) => !value)} language={language} onLanguage={() => setLanguage((value) => value === 'en' ? 'vi' : 'en')} />
     <StoryScene key={`${active}-${language}`} chapter={localizedChapters[active]} direction={direction} revealed={revealed} onReveal={reveal} mascotBounce={bouncing} language={language} />
     <StoryControls active={active} total={localizedChapters.length} onPrev={prev} onNext={next} language={language} />
-    <XProfileCard language={language} />
+    <div className="profile-slot"><XProfileCard language={language} /></div>
     <aside className="social-links" aria-label={language === 'vi' ? 'Mạng xã hội' : 'Social profiles'}>
       <a href="https://www.tiktok.com/@mintamdao" target="_blank" rel="noreferrer">TikTok</a>
       <a href="https://github.com/daomintam" target="_blank" rel="noreferrer">GitHub</a>
