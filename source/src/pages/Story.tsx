@@ -9,12 +9,18 @@ import { StoryControls } from '../components/StoryControls'
 import { XProfileCard } from '../components/XProfileCard'
 import { xProfile } from '../data/xProfile'
 
+function initialLanguage(): 'en' | 'vi' {
+  const saved = localStorage.getItem('tamverse-language-preference')
+  if (saved === 'en' || saved === 'vi') return saved
+  return navigator.languages.some((locale) => locale.toLowerCase().startsWith('vi')) ? 'vi' : 'en'
+}
+
 export default function Story() {
   const [active, setActive] = useState(0)
   const [revealed, setRevealed] = useState(false)
   const [bouncing, setBouncing] = useState(false)
   const [dark, setDark] = useState(() => localStorage.getItem('tamverse-theme') !== 'light')
-  const [language, setLanguage] = useState<'en' | 'vi'>(() => localStorage.getItem('tamverse-language') === 'vi' ? 'vi' : 'en')
+  const [language, setLanguage] = useState<'en' | 'vi'>(initialLanguage)
   const changeActive = useCallback((index: number) => {
     setActive(index); setRevealed(false); setBouncing(false)
   }, [])
@@ -29,7 +35,7 @@ export default function Story() {
 
   useEffect(() => {
     document.documentElement.lang = language
-    localStorage.setItem('tamverse-language', language)
+    localStorage.setItem('tamverse-language-preference', language)
   }, [language])
 
   useEffect(() => {
