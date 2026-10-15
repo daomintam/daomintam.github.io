@@ -15,3 +15,4 @@ const _assistantAdminApi=api;api=async function(path,options={}){if(path.include
 setInterval(()=>{if(state.access_token&&!$('logout')){const b=document.createElement('button');b.id='logout';b.textContent='Đăng xuất';b.className='danger';b.onclick=()=>{localStorage.removeItem('assistantAdminSession');location.reload()};$('status').after(b)}},500);
 
 
+
