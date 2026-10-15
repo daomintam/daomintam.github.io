@@ -33,6 +33,6 @@ export default function Hub() {
         {filter !== 'fact' && <a className="topic-archive" href="#/su-co"><span>Đọc thêm · Hồ sơ sự cố blockchain</span><span>04 hồ sơ có nguồn ↗</span></a>}
       </section>
     </main>
-    <footer className="atlas-footer"><p>Chuyện nhỏ thôi. Có khi thấy mình trong đó.</p><div><a href="https://github.com/daomintam" target="_blank" rel="noreferrer">GitHub ↗</a><a href={xProfile.url} target="_blank" rel="noreferrer">X ↗</a><AnalyticsWidget language="vi" /></div></footer>
+    <footer className="atlas-footer"><p>Chuyện nhỏ thôi. Có khi thấy mình trong đó.</p><div><a href="https://www.tiktok.com/@mintamdao" target="_blank" rel="noreferrer">TikTok ↗</a><a href="https://github.com/daomintam" target="_blank" rel="noreferrer">GitHub ↗</a><a href={xProfile.url} target="_blank" rel="noreferrer">X ↗</a><AnalyticsWidget language="vi" /></div></footer>
   </div>
 }
