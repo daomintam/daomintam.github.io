@@ -19,21 +19,26 @@ function currentRoute() {
 
 export default function App() {
   const [route, setRoute] = useState(currentRoute)
+  const [dark, setDark] = useState(() => localStorage.getItem('tamverse-theme') !== 'light')
   useAmbientMotion(route)
   useEffect(() => {
-    const update = () => setRoute(currentRoute())
+    const update = () => {
+      setRoute(currentRoute())
+      setDark(localStorage.getItem('tamverse-theme') !== 'light')
+    }
     window.addEventListener('hashchange', update)
     return () => window.removeEventListener('hashchange', update)
   }, [])
   useEffect(() => {
     document.title = route === 'day' ? 'Một ngày, bảy sắc thái · TΛM ATLAS' : route === 'fiction' ? 'TΛMVERSE · Chuyện hư cấu' : route === 'incidents' ? 'Hồ sơ sự cố blockchain · TΛM ATLAS' : 'TΛM ATLAS · Chọn một câu chuyện'
-    if (route !== 'fiction') {
-      document.documentElement.lang = 'vi'
-      document.documentElement.dataset.theme = 'dark'
-    }
+    if (route !== 'fiction') document.documentElement.lang = 'vi'
   }, [route])
-  if (route === 'day') return <DayStories />
+  useEffect(() => {
+    if (route === 'fiction') return
+    document.documentElement.dataset.theme = dark ? 'dark' : 'light'
+    localStorage.setItem('tamverse-theme', dark ? 'dark' : 'light')
+  }, [dark, route])
   if (route === 'fiction') return <Story />
-  if (route === 'incidents') return <IncidentStories />
-  return <Hub />
+  const page = route === 'day' ? <DayStories /> : route === 'incidents' ? <IncidentStories /> : <Hub />
+  return <>{page}<button className="global-theme-toggle" onClick={() => setDark(value => !value)} aria-label={`Chuyển sang giao diện ${dark ? 'sáng' : 'tối'}`} title="Đổi giao diện">{dark ? '☀' : '☾'}</button></>
 }
