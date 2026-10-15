@@ -50,9 +50,10 @@
 @media(prefers-reduced-motion:reduce) { .atlas-app *,.day-app * { animation:none !important; transition:none !important; }.atlas-hub .topic-card,.atlas-hub .topic-card:hover { transform:none; } }
 
 /* Shared light/dark control for every atlas route outside the fiction reader. */
-.global-theme-toggle { position:fixed; right:22px; bottom:20px; z-index:80; width:42px; height:42px; display:grid; place-items:center; border:1px solid #ffffff2b; border-radius:50%; background:#191d1bcc; color:#f4eee5; font-size:20px; cursor:pointer; backdrop-filter:blur(14px); box-shadow:0 10px 28px #0004; transition:transform .25s,border-color .25s,background .25s; }
+.global-theme-toggle { position:fixed; right:22px; top:18px; z-index:80; width:42px; height:42px; display:grid; place-items:center; border:1px solid #ffffff2b; border-radius:50%; background:#191d1bcc; color:#f4eee5; font-size:20px; cursor:pointer; backdrop-filter:blur(14px); box-shadow:0 10px 28px #0004; transition:transform .25s,border-color .25s,background .25s; }
 .global-theme-toggle:hover { transform:translateY(-3px) rotate(-8deg); border-color:var(--accent,#aad5c2); }
 .global-theme-toggle:focus-visible { outline:2px solid var(--accent,#aad5c2); outline-offset:4px; }
+.atlas-header,.day-header { padding-right:58px; }
 :root[data-theme='light'] .global-theme-toggle { color:#28302c; background:#fffdf8dd; border-color:#3b4a4130; box-shadow:0 10px 28px #5b4a3520; }
 :root[data-theme='light'] .atlas-app { --text:#282a27; --muted:#625e58; --border:#453c3026; color:var(--text); background:#f4efe6; }
 :root[data-theme='light'] .atlas-hub { --bg:#f4efe6; --accent:#98653e; --text:#28231f; --muted:#665d55; background:radial-gradient(ellipse at 8% 50%,#c18b5b16,transparent 60%),#f4efe6; }
@@ -60,11 +61,25 @@
 :root[data-theme='light'] .atlas-hub .topic-day { background:linear-gradient(125deg,#fff5e8,#f8efe5); }
 :root[data-theme='light'] .atlas-hub .topic-tamverse { background:linear-gradient(125deg,#edf6f0,#f7f4ed); border-color:#50806a38; }
 :root[data-theme='light'] .atlas-hub .hub-description,:root[data-theme='light'] .atlas-hub .topic-card p,:root[data-theme='light'] .atlas-hub .atlas-footer p,:root[data-theme='light'] .atlas-hub .atlas-footer a,:root[data-theme='light'] .atlas-hub .atlas-header-note,:root[data-theme='light'] .atlas-hub .atlas-header-link { color:#655b52; }
+:root[data-theme='light'] .atlas-hub .hub-intro h1 em { color:#9a633c; }
+:root[data-theme='light'] .atlas-hub .hub-intro .atlas-eyebrow,:root[data-theme='light'] .atlas-hub .topic-kind { color:#805333; }
+:root[data-theme='light'] .atlas-hub .topic-filters { background:#fffaf3; border-color:#5f49342d; box-shadow:inset 0 0 0 1px #ffffff80; }
+:root[data-theme='light'] .atlas-hub .topic-filters button { color:#5d534a; border-color:transparent; }
+:root[data-theme='light'] .atlas-hub .topic-filters button:hover { color:#2c2722; background:#9a633c14; }
+:root[data-theme='light'] .atlas-hub .topic-filters button[aria-pressed='true'] { color:#fffaf4; background:#8f5b36; border-color:#8f5b36; box-shadow:0 5px 14px #6d45242b; }
+:root[data-theme='light'] .atlas-hub .topic-card-bottom,:root[data-theme='light'] .atlas-hub .topic-number,:root[data-theme='light'] .atlas-hub .topic-archive { color:#6f6256; }
 :root[data-theme='light'] .day-app { color:#292823; background-color:#f3efe6 !important; }
 :root[data-theme='light'] .day-app .day-prose,:root[data-theme='light'] .day-app .day-header,:root[data-theme='light'] .day-app .day-footer { color:#5f5b53; }
 :root[data-theme='light'] .day-app .day-header,:root[data-theme='light'] .day-app .day-footer { border-color:#413b3026; }
 :root[data-theme='light'] .day-app .day-choices button,:root[data-theme='light'] .day-app .day-navigation button { color:#302d28; border-color:#443c3033; background:#fffaf4b8; }
+:root[data-theme='light'] .day-app .day-status { color:#403a33; background:#fffaf4db; border-color:#5e4d3930; box-shadow:0 8px 24px #6b51341c; }
 :root[data-theme='light'] .incident-app { --bg:#f3efe7; --day-bg:#f3efe7; background-color:#f3efe7 !important; }
 :root[data-theme='light'] .incident-app .case-lead,:root[data-theme='light'] .incident-app .case-panel p,:root[data-theme='light'] .incident-app .case-sources a,:root[data-theme='light'] .incident-app .back-topics,:root[data-theme='light'] .incident-app .case-real-label { color:#5e5a54; }
 :root[data-theme='light'] .incident-app .case-reading,:root[data-theme='light'] .incident-app .case-diagram { background:#fffaf580; border-color:#4d443322; }
-@media(max-width:600px) { .global-theme-toggle { right:14px; bottom:13px; width:38px; height:38px; font-size:18px; } }
+:root[data-theme='light'] .incident-app .case-intro h1 { color:#28241f; }
+:root[data-theme='light'] .incident-app .case-intro .atlas-eyebrow,:root[data-theme='light'] .incident-app .case-dateline,:root[data-theme='light'] .incident-app .case-counter,:root[data-theme='light'] .incident-app .case-metric span { color:#665e55; }
+:root[data-theme='light'] .incident-app .case-chain-nav button { color:#665e55; border-color:#57493624; background:#fffaf36b; }
+:root[data-theme='light'] .incident-app .case-chain-nav button[aria-current='step'] { color:#6d431f; background:#f3b36a20; border-color:#b976384f; box-shadow:0 5px 14px #6d452414; }
+:root[data-theme='light'] .incident-app .case-tabs button { color:#686057; }
+:root[data-theme='light'] .incident-app .case-tabs button[aria-selected='true'] { color:#8a552c; }
+@media(max-width:600px) { .global-theme-toggle { right:14px; top:10px; width:38px; height:38px; font-size:18px; }.atlas-header,.day-header { padding-right:48px; } }

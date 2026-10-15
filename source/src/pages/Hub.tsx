@@ -12,7 +12,7 @@ export default function Hub() {
   const [filter, setFilter] = useState<'all' | 'fact' | 'fiction'>('all')
   const visible = topics.filter(topic => filter === 'all' ? topic.id !== 'incidents' : topic.kind === filter)
   return <div className="atlas-app atlas-hub">
-    <header className="atlas-header"><a className="atlas-brand" href="#/">TΛM <span>/</span> ATLAS<span className="brand-dot" /></a><span className="atlas-header-note">MỖI CHỦ ĐỀ, MỘT THẾ GIỚI.</span><a className="atlas-header-link" href={xProfile.url} target="_blank" rel="noreferrer">TΛM trên X ↗</a></header>
+    <header className="atlas-header"><a className="atlas-brand" href="#/">TΛM <span>/</span> ATLAS<span className="brand-dot" /></a><span className="atlas-header-note">MỖI CHỦ ĐỀ, MỘT THẾ GIỚI.</span></header>
     <main className="hub-main">
       <section className="hub-intro">
         <p className="atlas-eyebrow"><span /> GHÉ CHƠI CÙNG TΛM</p>
