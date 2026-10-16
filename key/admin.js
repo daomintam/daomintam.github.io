@@ -14,6 +14,7 @@ document.head.insertAdjacentHTML('beforeend','<style>.table-loading{color:#9eabb
 const _assistantAdminApi=api;api=async function(path,options={}){if(path.includes('/functions/v1/admin-keys')&&String(options.body||'').includes('"action":"list"')){$('rows').innerHTML='<tr><td colspan="4" class="table-loading">Đang tải trạng thái key…</td></tr>';}return _assistantAdminApi(path,options)};
 setInterval(()=>{if(state.access_token&&!$('logout')){const b=document.createElement('button');b.id='logout';b.textContent='Đăng xuất';b.className='danger';b.onclick=()=>{localStorage.removeItem('assistantAdminSession');location.reload()};$('status').after(b)}},500);
 const markSharedKeys=()=>{const table=$('rows')?.closest('table');if(!table)return;const head=table.querySelector('thead tr');if(head&&!head.querySelector('[data-mode-head]')){const th=document.createElement('th');th.dataset.modeHead='1';th.textContent='Quyền dùng';head.insertBefore(th,head.lastElementChild)}table.querySelectorAll('tbody tr').forEach(row=>{if(row.querySelector('[data-key-mode]'))return;const key=row.cells[0]?.textContent?.trim().toLowerCase(),cell=document.createElement('td');cell.dataset.keyMode='1';cell.textContent=key==='kieu.eth'?'Dùng chung':'1 máy';row.insertBefore(cell,row.lastElementChild)})};new MutationObserver(markSharedKeys).observe(document.body,{childList:true,subtree:true});markSharedKeys();
+setInterval(markSharedKeys,500);
 
 
 
