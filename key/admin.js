@@ -1,21 +1,275 @@
-(() => { const style=document.createElement('style');style.textContent=`body{background:#0b0f14!important;color:#e7edf4!important}main{max-width:980px!important;margin:32px auto!important}.card{background:#121820!important;border:1px solid #273342!important;box-shadow:0 12px 32px #0004!important;padding:22px!important}.card:first-of-type{display:flex;align-items:center;gap:12px;flex-wrap:wrap}.card h2{margin:0 0 16px;font-size:20px}.card input{height:38px;box-sizing:border-box;background:#0d131a;border-color:#415166;width:280px!important}.card button{height:38px;border-radius:9px;border:0;padding:0 15px;margin:0;background:#1997e5}.card button:hover{filter:brightness(1.12)}.card button.danger{background:#a62f46}.card button[data-reset]{background:#256f9d}.card button[data-delete]{background:#6f2434}.key{background:#0d2a20;border:1px solid #1f6b4e;border-radius:8px;padding:10px 12px;display:block;width:100%;box-sizing:border-box}.muted{color:#9eabb8!important}table{font-size:14px}th{color:#9eabb8;font-weight:600}td,th{padding:13px 8px!important}td:nth-child(2){font-family:ui-monospace;color:#91d7b2}td:nth-child(3){color:#aeb9c5}@media(max-width:700px){main{margin:16px auto!important}.card input{width:100%!important}.card button{flex:1}.card:first-of-type{display:grid;grid-template-columns:1fr 1fr}.card:first-of-type label,.card:first-of-type input,.card:first-of-type #created{grid-column:1/-1}table{display:block;overflow:auto;white-space:nowrap}}`;document.head.appendChild(style); const cfg=window.ASSISTANT_ADMIN_CONFIG||{}, $=id=>document.getElementById(id), base=String(cfg.supabaseUrl||'').replace(/\/$/,''), headers=()=>({'apikey':cfg.supabaseAnonKey,'Authorization':`Bearer ${state.access_token}`,'Content-Type':'application/json'}), state=JSON.parse(localStorage.assistantAdminSession||'null')||{};
-function setStatus(text,error=false){$('status').textContent=text;$('status').style.color=error?'#ff8e8e':''}
-async function api(path,options={}){const r=await fetch(base+path,{...options,headers:{...headers(),...(options.headers||{})}});const data=await r.json().catch(()=>({}));if(!r.ok){if(r.status===401||r.status===403){localStorage.removeItem('assistantAdminSession');state.access_token='';show()}throw new Error(data.message||data.error||'Request thất bại')}return data}
-function show(){const ok=!!state.access_token;$('login').classList.toggle('hidden',ok);$('app').classList.toggle('hidden',!ok);if(ok){if(!$('custom-key')){const i=document.createElement('input');i.id='custom-key';i.placeholder='Ví dụ: elonmusk';i.autocomplete='off';i.style.display='none';$('create').before(i);const b=document.createElement('button');b.id='create-custom';b.textContent='Tạo custom key';$('create').after(b);b.onclick=()=>{if(i.style.display==='none'){i.style.display='inline-block';$('create').style.display='none';b.textContent='Tạo custom key';i.focus()}else createKey(true)}}setStatus(`Đã đăng nhập: ${state.user?.user_metadata?.user_name||state.user?.email||'owner'}`);load()}}
-async function createKey(custom=false){const createButton=create,customButton=create-custom;[createButton,customButton].forEach(b=>{if(b)b.disabled=true});setStatus('Đang tạo key…');try{const key=custom?($('custom-key')?.value||'').trim():'';if(custom&&!key){setStatus('Nhập custom key trước khi tạo',true);return}const d=await api('/functions/v1/admin-keys',{method:'POST',body:JSON.stringify({action:'create',key,label:key||''})});$('created').textContent=`Key mới (chỉ hiện lần này): ${d.key}`;if($('custom-key'))$('custom-key').value='';if(custom){$('custom-key').style.display='none';$('create').style.display='';}await load()}catch(e){$('created').textContent=`Không tạo được key: ${e.message}`;setStatus(e.message,true)}}
-async function load(){try{const data=await api('/functions/v1/admin-keys',{method:'POST',body:JSON.stringify({action:'list'})});$('rows').innerHTML=data.map(x=>`<tr><td>${x.label||x.id}</td><td>${x.status}</td><td>${x.device_hash?'Đã gắn':'Chưa gắn'}</td><td data-key-mode="1">${String(x.label||x.id).trim().toLowerCase()==='kieu.eth'?'Dùng chung':'1 máy'}</td><td><button data-reset="${x.id}">Reset</button> <button class="danger" data-revoke="${x.id}">Revoke</button> <button class="danger" data-delete="${x.id}">Xoá</button></td></tr>`).join('');document.querySelectorAll('[data-reset]').forEach(b=>b.onclick=async()=>{if(!confirm('Reset thiết bị của key này?'))return;try{await api('/functions/v1/admin-keys',{method:'POST',body:JSON.stringify({action:'reset',id:b.dataset.reset})});await load()}catch(e){setStatus(e.message,true)}});document.querySelectorAll('[data-revoke]').forEach(b=>b.onclick=async()=>{if(!confirm('Revoke key này?'))return;try{await api('/functions/v1/admin-keys',{method:'POST',body:JSON.stringify({action:'revoke',id:b.dataset.revoke})});await load()}catch(e){setStatus(e.message,true)}});document.querySelectorAll('[data-delete]').forEach(b=>b.onclick=async()=>{if(!confirm('Xoá vĩnh viễn key này? Không thể hoàn tác.'))return;try{await api('/functions/v1/admin-keys',{method:'POST',body:JSON.stringify({action:'delete',id:b.dataset.delete})});await load()}catch(e){setStatus(e.message,true)}})}catch(e){setStatus(e.message,true)}}
-$('github').onclick=()=>{location.href=base+'/auth/v1/authorize?provider=github&redirect_to='+encodeURIComponent(cfg.redirectUrl||location.origin+'/')};$('create').onclick=()=>createKey(false);
-const hash=location.hash.slice(1),params=new URLSearchParams(hash);if(params.get('access_token')){Object.assign(state,{access_token:params.get('access_token'),refresh_token:params.get('refresh_token')});localStorage.assistantAdminSession=JSON.stringify(state);history.replaceState({},'',location.pathname)}if(!state.access_token)$('logout')?.classList.add('hidden');show();
+(() => {
+  const style = document.createElement("style");
+  style.textContent = `body{background:#0b0f14!important;color:#e7edf4!important}main{max-width:980px!important;margin:32px auto!important}.card{background:#121820!important;border:1px solid #273342!important;box-shadow:0 12px 32px #0004!important;padding:22px!important}.card:first-of-type{display:flex;align-items:center;gap:12px;flex-wrap:wrap}.card h2{margin:0 0 16px;font-size:20px}.key-list-heading{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:16px}.key-list-heading h2{margin:0}.key-list-heading input{height:38px;box-sizing:border-box;background:#0d131a;border-color:#415166;width:min(280px,100%)!important}.card input{height:38px;box-sizing:border-box;background:#0d131a;border-color:#415166;width:280px!important}.card button{height:38px;border-radius:9px;border:0;padding:0 15px;margin:0;background:#1997e5}.card button:hover{filter:brightness(1.12)}.card button.danger{background:#a62f46}.card button[data-reset]{background:#256f9d}.card button[data-delete]{background:#6f2434}.key{background:#0d2a20;border:1px solid #1f6b4e;border-radius:8px;padding:10px 12px;display:block;width:100%;box-sizing:border-box}.muted{color:#9eabb8!important}table{font-size:14px}th{color:#9eabb8;font-weight:600}td,th{padding:13px 8px!important}td:nth-child(2){font-family:ui-monospace;color:#91d7b2}td:nth-child(3){color:#aeb9c5}@media(max-width:700px){main{margin:16px auto!important}.key-list-heading{align-items:stretch;flex-direction:column;gap:10px}.card input{width:100%!important}.card button{flex:1}.card:first-of-type{display:grid;grid-template-columns:1fr 1fr}.card:first-of-type label,.card:first-of-type input,.card:first-of-type #created{grid-column:1/-1}table{display:block;overflow:auto;white-space:nowrap}}`;
+  document.head.appendChild(style);
+  const cfg = window.ASSISTANT_ADMIN_CONFIG || {},
+    $ = (id) => document.getElementById(id),
+    base = String(cfg.supabaseUrl || "").replace(/\/$/, ""),
+    headers = () => ({
+      apikey: cfg.supabaseAnonKey,
+      Authorization: `Bearer ${state.access_token}`,
+      "Content-Type": "application/json",
+    }),
+    state = JSON.parse(localStorage.assistantAdminSession || "null") || {};
+  function setStatus(text, error = false) {
+    $("status").textContent = text;
+    $("status").style.color = error ? "#ff8e8e" : "";
+  }
+  async function api(path, options = {}) {
+    const r = await fetch(base + path, {
+      ...options,
+      headers: { ...headers(), ...(options.headers || {}) },
+    });
+    const data = await r.json().catch(() => ({}));
+    if (!r.ok) {
+      if (r.status === 401 || r.status === 403) {
+        localStorage.removeItem("assistantAdminSession");
+        state.access_token = "";
+        show();
+      }
+      throw new Error(data.message || data.error || "Request thất bại");
+    }
+    return data;
+  }
+  function show() {
+    const ok = !!state.access_token;
+    $("login").classList.toggle("hidden", ok);
+    $("app").classList.toggle("hidden", !ok);
+    if (ok) {
+      if (!$("custom-key")) {
+        const i = document.createElement("input");
+        i.id = "custom-key";
+        i.placeholder = "Ví dụ: elonmusk";
+        i.autocomplete = "off";
+        i.style.display = "none";
+        $("create").before(i);
+        const b = document.createElement("button");
+        b.id = "create-custom";
+        b.textContent = "Tạo custom key";
+        $("create").after(b);
+        b.onclick = () => {
+          if (i.style.display === "none") {
+            i.style.display = "inline-block";
+            $("create").style.display = "none";
+            b.textContent = "Tạo custom key";
+            i.focus();
+          } else createKey(true);
+        };
+      }
+      setStatus(
+        `Đã đăng nhập: ${state.user?.user_metadata?.user_name || state.user?.email || "owner"}`,
+      );
+      load();
+    }
+  }
+  async function createKey(custom = false) {
+    const createButton = create,
+      customButton = create - custom;
+    [createButton, customButton].forEach((b) => {
+      if (b) b.disabled = true;
+    });
+    setStatus("Đang tạo key…");
+    try {
+      const key = custom ? ($("custom-key")?.value || "").trim() : "";
+      if (custom && !key) {
+        setStatus("Nhập custom key trước khi tạo", true);
+        return;
+      }
+      const d = await api("/functions/v1/admin-keys", {
+        method: "POST",
+        body: JSON.stringify({ action: "create", key, label: key || "" }),
+      });
+      $("created").textContent = `Key mới (chỉ hiện lần này): ${d.key}`;
+      if ($("custom-key")) $("custom-key").value = "";
+      if (custom) {
+        $("custom-key").style.display = "none";
+        $("create").style.display = "";
+      }
+      await load();
+    } catch (e) {
+      $("created").textContent = `Không tạo được key: ${e.message}`;
+      setStatus(e.message, true);
+    }
+  }
+  async function load() {
+    try {
+      const data = await api("/functions/v1/admin-keys", {
+        method: "POST",
+        body: JSON.stringify({ action: "list" }),
+      });
+      $("rows").innerHTML = data
+        .map(
+          (x) =>
+            `<tr><td>${x.label || x.id}</td><td>${x.status}</td><td>${x.device_hash ? "Đã gắn" : "Chưa gắn"}</td><td data-key-mode="1">${
+              String(x.label || x.id)
+                .trim()
+                .toLowerCase() === "kieu.eth"
+                ? "Dùng chung"
+                : "1 máy"
+            }</td><td><button data-reset="${x.id}">Reset</button> <button class="danger" data-revoke="${x.id}">Revoke</button> <button class="danger" data-delete="${x.id}">Xoá</button></td></tr>`,
+        )
+        .join("");
+      const search = $("key-search");
+      const filterRows = () => {
+        const query = String(search?.value || "")
+          .trim()
+          .toLocaleLowerCase();
+        $("rows")
+          .querySelectorAll("tr")
+          .forEach((row) => {
+            row.hidden = !!query && !row.textContent.toLocaleLowerCase().includes(query);
+          });
+      };
+      if (search) search.oninput = filterRows;
+      filterRows();
+      document.querySelectorAll("[data-reset]").forEach(
+        (b) =>
+          (b.onclick = async () => {
+            if (!confirm("Reset thiết bị của key này?")) return;
+            try {
+              await api("/functions/v1/admin-keys", {
+                method: "POST",
+                body: JSON.stringify({ action: "reset", id: b.dataset.reset }),
+              });
+              await load();
+            } catch (e) {
+              setStatus(e.message, true);
+            }
+          }),
+      );
+      document.querySelectorAll("[data-revoke]").forEach(
+        (b) =>
+          (b.onclick = async () => {
+            if (!confirm("Revoke key này?")) return;
+            try {
+              await api("/functions/v1/admin-keys", {
+                method: "POST",
+                body: JSON.stringify({ action: "revoke", id: b.dataset.revoke }),
+              });
+              await load();
+            } catch (e) {
+              setStatus(e.message, true);
+            }
+          }),
+      );
+      document.querySelectorAll("[data-delete]").forEach(
+        (b) =>
+          (b.onclick = async () => {
+            if (!confirm("Xoá vĩnh viễn key này? Không thể hoàn tác.")) return;
+            try {
+              await api("/functions/v1/admin-keys", {
+                method: "POST",
+                body: JSON.stringify({ action: "delete", id: b.dataset.delete }),
+              });
+              await load();
+            } catch (e) {
+              setStatus(e.message, true);
+            }
+          }),
+      );
+    } catch (e) {
+      setStatus(e.message, true);
+    }
+  }
+  $("github").onclick = () => {
+    location.href =
+      base +
+      "/auth/v1/authorize?provider=github&redirect_to=" +
+      encodeURIComponent(cfg.redirectUrl || location.origin + "/");
+  };
+  $("create").onclick = () => createKey(false);
+  const hash = location.hash.slice(1),
+    params = new URLSearchParams(hash);
+  if (params.get("access_token")) {
+    Object.assign(state, {
+      access_token: params.get("access_token"),
+      refresh_token: params.get("refresh_token"),
+    });
+    localStorage.assistantAdminSession = JSON.stringify(state);
+    history.replaceState({}, "", location.pathname);
+  }
+  if (!state.access_token) $("logout")?.classList.add("hidden");
+  show();
 })();
-document.head.insertAdjacentHTML('beforeend','<style>.hidden{display:none!important}</style>');
-document.head.insertAdjacentHTML('beforeend','<style>@import url("https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,400..800&family=Space+Mono:wght@400;700&display=swap");body{background:#141918!important;color:#f4eee5!important;font-family:"Bricolage Grotesque",Segoe UI,sans-serif!important}main{max-width:1080px!important;margin:0 auto!important;padding:48px 28px!important}main:before{color:#d7f89a!important;font-family:"Space Mono",monospace!important}.card{background:linear-gradient(135deg,#202a25,#17201f)!important;border:1px solid #d7f89a30!important;border-radius:14px!important;box-shadow:0 20px 50px #0005!important}.card:first-of-type:before{color:#d7f89a!important}.card button{background:#d7f89a!important;color:#1c2418!important;font-weight:700!important;border-color:#d7f89a!important}.card button.danger{background:#f09a84!important;border-color:#f09a84!important;color:#2b1c19!important}.card input{background:#141918!important;border-color:#d7f89a55!important;color:#f4eee5!important}.card input::placeholder{color:#87947e}.card:nth-of-type(2) h2:after{background:#d7f89a18!important;color:#d7f89a!important}.card table tr:hover{background:#d7f89a0d!important}h1{letter-spacing:-.05em!important}</style>');
-document.head.insertAdjacentHTML('beforeend','<style>h1{font-size:30px;letter-spacing:-.03em;margin-bottom:6px}main:before{content:"KEY MANAGEMENT";display:block;color:#36a9ee;font-size:11px;font-weight:700;letter-spacing:.16em;margin-bottom:10px}.card{border-radius:16px!important}.card:first-of-type:before{content:"Cấp quyền truy cập";display:block;width:100%;font-size:18px;font-weight:700;color:#f4f7fa}.card:first-of-type label{color:#93a4b6;font-size:13px}.card:first-of-type button{font-weight:650}.card:nth-of-type(2){margin-top:22px}.card:nth-of-type(2) h2{display:flex;align-items:center;gap:10px}.card:nth-of-type(2) h2:after{content:"Bảo mật · Supabase";font-size:11px;font-weight:500;color:#6e8194;background:#1a2733;border-radius:999px;padding:5px 9px}.card table tr:hover{background:#18212b}.card td:nth-child(2){text-transform:capitalize}.card td:nth-child(2)::first-letter{text-transform:uppercase}</style>');
-document.head.insertAdjacentHTML('beforeend','<style>.table-loading{color:#9eabb8;text-align:center;padding:22px!important}.table-loading:after{content:"";display:inline-block;width:12px;height:12px;margin-left:8px;border:2px solid #405267;border-top-color:#35a7ee;border-radius:50%;vertical-align:-2px;animation:spin .7s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}</style>');
-const _assistantAdminApi=api;api=async function(path,options={}){if(path.includes('/functions/v1/admin-keys')&&String(options.body||'').includes('"action":"list"')){$('rows').innerHTML='<tr><td colspan="4" class="table-loading">Đang tải trạng thái key…</td></tr>';}return _assistantAdminApi(path,options)};
-setInterval(()=>{if(state.access_token&&!$('logout')){const b=document.createElement('button');b.id='logout';b.textContent='Đăng xuất';b.className='danger';b.onclick=()=>{localStorage.removeItem('assistantAdminSession');location.reload()};$('status').after(b)}},500);
-const markSharedKeys=()=>{const table=$('rows')?.closest('table');if(!table)return;const head=table.querySelector('thead tr');if(head&&!head.querySelector('[data-mode-head]')){const th=document.createElement('th');th.dataset.modeHead='1';th.textContent='Quyền sử dụng';head.insertBefore(th,head.lastElementChild)}table.querySelectorAll('tbody tr').forEach(row=>{if(row.querySelector('[data-key-mode]'))return;const key=row.cells[0]?.textContent?.trim().toLowerCase(),cell=document.createElement('td');cell.dataset.keyMode='1';cell.textContent=key==='kieu.eth'?'Dùng chung':'1 máy';row.insertBefore(cell,row.lastElementChild)})};new MutationObserver(markSharedKeys).observe(document.body,{childList:true,subtree:true});markSharedKeys();
-setInterval(markSharedKeys,500);
-const ensureLogout=()=>{const b=$('logout'),app=$('app');if(!b)return;if(app&&!app.classList.contains('hidden')&&state.access_token){b.classList.remove('hidden');b.removeAttribute('aria-hidden');b.textContent='Đăng xuất';b.type='button';b.style.display='block';b.style.margin='0 0 14px auto';b.onclick=()=>{localStorage.removeItem('assistantAdminSession');state.access_token='';location.reload()}}else{b.classList.add('hidden');b.setAttribute('aria-hidden','true')}};ensureLogout();setInterval(ensureLogout,500);
-
-
-
+document.head.insertAdjacentHTML("beforeend", "<style>.hidden{display:none!important}</style>");
+document.head.insertAdjacentHTML(
+  "beforeend",
+  '<style>@import url("https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,400..800&family=Space+Mono:wght@400;700&display=swap");body{background:#141918!important;color:#f4eee5!important;font-family:"Bricolage Grotesque",Segoe UI,sans-serif!important}main{max-width:1080px!important;margin:0 auto!important;padding:48px 28px!important}main:before{color:#d7f89a!important;font-family:"Space Mono",monospace!important}.card{background:linear-gradient(135deg,#202a25,#17201f)!important;border:1px solid #d7f89a30!important;border-radius:14px!important;box-shadow:0 20px 50px #0005!important}.card:first-of-type:before{color:#d7f89a!important}.card button{background:#d7f89a!important;color:#1c2418!important;font-weight:700!important;border-color:#d7f89a!important}.card button.danger{background:#f09a84!important;border-color:#f09a84!important;color:#2b1c19!important}.card input{background:#141918!important;border-color:#d7f89a55!important;color:#f4eee5!important}.card input::placeholder{color:#87947e}.card:nth-of-type(2) h2:after{background:#d7f89a18!important;color:#d7f89a!important}.card table tr:hover{background:#d7f89a0d!important}h1{letter-spacing:-.05em!important}</style>',
+);
+document.head.insertAdjacentHTML(
+  "beforeend",
+  '<style>h1{font-size:30px;letter-spacing:-.03em;margin-bottom:6px}main:before{content:"KEY MANAGEMENT";display:block;color:#36a9ee;font-size:11px;font-weight:700;letter-spacing:.16em;margin-bottom:10px}.card{border-radius:16px!important}.card:first-of-type:before{content:"Cấp quyền truy cập";display:block;width:100%;font-size:18px;font-weight:700;color:#f4f7fa}.card:first-of-type label{color:#93a4b6;font-size:13px}.card:first-of-type button{font-weight:650}.card:nth-of-type(2){margin-top:22px}.card:nth-of-type(2) h2{display:flex;align-items:center;gap:10px}.card:nth-of-type(2) h2:after{content:"Bảo mật · Supabase";font-size:11px;font-weight:500;color:#6e8194;background:#1a2733;border-radius:999px;padding:5px 9px}.card table tr:hover{background:#18212b}.card td:nth-child(2){text-transform:capitalize}.card td:nth-child(2)::first-letter{text-transform:uppercase}</style>',
+);
+document.head.insertAdjacentHTML(
+  "beforeend",
+  '<style>.table-loading{color:#9eabb8;text-align:center;padding:22px!important}.table-loading:after{content:"";display:inline-block;width:12px;height:12px;margin-left:8px;border:2px solid #405267;border-top-color:#35a7ee;border-radius:50%;vertical-align:-2px;animation:spin .7s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}</style>',
+);
+const _assistantAdminApi = api;
+api = async function (path, options = {}) {
+  if (
+    path.includes("/functions/v1/admin-keys") &&
+    String(options.body || "").includes('"action":"list"')
+  ) {
+    $("rows").innerHTML =
+      '<tr><td colspan="4" class="table-loading">Đang tải trạng thái key…</td></tr>';
+  }
+  return _assistantAdminApi(path, options);
+};
+setInterval(() => {
+  if (state.access_token && !$("logout")) {
+    const b = document.createElement("button");
+    b.id = "logout";
+    b.textContent = "Đăng xuất";
+    b.className = "danger";
+    b.onclick = () => {
+      localStorage.removeItem("assistantAdminSession");
+      location.reload();
+    };
+    $("status").after(b);
+  }
+}, 500);
+const markSharedKeys = () => {
+  const table = $("rows")?.closest("table");
+  if (!table) return;
+  const head = table.querySelector("thead tr");
+  if (head && !head.querySelector("[data-mode-head]")) {
+    const th = document.createElement("th");
+    th.dataset.modeHead = "1";
+    th.textContent = "Quyền sử dụng";
+    head.insertBefore(th, head.lastElementChild);
+  }
+  table.querySelectorAll("tbody tr").forEach((row) => {
+    if (row.querySelector("[data-key-mode]")) return;
+    const key = row.cells[0]?.textContent?.trim().toLowerCase(),
+      cell = document.createElement("td");
+    cell.dataset.keyMode = "1";
+    cell.textContent = key === "kieu.eth" ? "Dùng chung" : "1 máy";
+    row.insertBefore(cell, row.lastElementChild);
+  });
+};
+new MutationObserver(markSharedKeys).observe(document.body, { childList: true, subtree: true });
+markSharedKeys();
+setInterval(markSharedKeys, 500);
+const ensureLogout = () => {
+  const b = $("logout"),
+    app = $("app");
+  if (!b) return;
+  if (app && !app.classList.contains("hidden") && state.access_token) {
+    b.classList.remove("hidden");
+    b.removeAttribute("aria-hidden");
+    b.textContent = "Đăng xuất";
+    b.type = "button";
+    b.style.display = "block";
+    b.style.margin = "0 0 14px auto";
+    b.onclick = () => {
+      localStorage.removeItem("assistantAdminSession");
+      state.access_token = "";
+      location.reload();
+    };
+  } else {
+    b.classList.add("hidden");
+    b.setAttribute("aria-hidden", "true");
+  }
+};
+ensureLogout();
+setInterval(ensureLogout, 500);
