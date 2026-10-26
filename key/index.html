@@ -2,81 +2,460 @@
 <html lang="vi">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Assistant Admin</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark light" />
+    <title>Assistant · Quản lý key</title>
     <style>
+      :root {
+        color-scheme: dark;
+        font-family:
+          Inter,
+          Roboto,
+          ui-sans-serif,
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          sans-serif;
+        background: #0b0f14;
+        color: #e7edf4;
+        --surface: #121820;
+        --border: #2d3a48;
+        --muted: #9eabb8;
+        --accent: #1d9bf0;
+        --success: #2acb83;
+      }
+      * {
+        box-sizing: border-box;
+      }
       body {
         margin: 0;
-        background: #101418;
-        color: #f2f4f7;
-        font: 15px system-ui;
+        min-width: 320px;
+        background: #0b0f14;
       }
       main {
-        max-width: 900px;
-        margin: 40px auto;
-        padding: 0 20px;
+        width: min(1080px, 100%);
+        margin: 0 auto;
+        padding: 28px clamp(14px, 4vw, 34px) 48px;
+      }
+      h1 {
+        margin: 0;
+        font-size: clamp(24px, 5vw, 32px);
+        letter-spacing: -0.03em;
+      }
+      h2 {
+        margin: 0;
+        font-size: 18px;
+      }
+      .eyebrow {
+        margin: 4px 0 24px;
+        color: #73c8ff;
+        font-size: 11px;
+        font-weight: 750;
+        letter-spacing: 0.16em;
+      }
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        margin-bottom: 18px;
+      }
+      .topbar-actions {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      #status {
+        margin: 0 0 18px;
+        color: var(--muted);
+        font-size: 13px;
+      }
+      #status.error {
+        color: #ff9b9b;
       }
       .card {
-        background: #171c22;
-        border: 1px solid #303943;
-        border-radius: 12px;
-        padding: 18px;
-        margin: 16px 0;
+        margin: 14px 0;
+        padding: clamp(14px, 3vw, 22px);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        background: var(--surface);
+        box-shadow: 0 12px 32px #0004;
+      }
+      .create-card {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+      .create-card .key {
+        flex: 1 1 100%;
+      }
+      .list-heading {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        margin-bottom: 14px;
+      }
+      .list-heading input {
+        width: min(280px, 100%);
       }
       button,
-      input {
-        font: inherit;
-        border-radius: 8px;
-        padding: 9px 12px;
-        border: 1px solid #4c5967;
-        background: #11161b;
+      input,
+      select {
+        min-height: 38px;
+        border: 1px solid #405166;
+        border-radius: 9px;
+        background: #0d131a;
         color: inherit;
+        font: inherit;
       }
       button {
+        padding: 8px 14px;
         cursor: pointer;
-        background: #1d9bf0;
-        border-color: #1d9bf0;
       }
-      .danger {
-        background: #8b2635;
-        border-color: #8b2635;
+      button.primary {
+        border-color: var(--accent);
+        background: var(--accent);
+        color: #fff;
+        font-weight: 700;
+      }
+      button.danger {
+        border-color: #8e3448;
+        background: #76293d;
+        color: #fff;
+      }
+      button:disabled {
+        cursor: wait;
+        opacity: 0.6;
+      }
+      input,
+      select {
+        width: 100%;
+        padding: 8px 10px;
+      }
+      input:focus-visible,
+      select:focus-visible,
+      button:focus-visible {
+        outline: 2px solid #73c8ff;
+        outline-offset: 2px;
+      }
+      .key {
+        margin: 0;
+        padding: 10px 12px;
+        overflow-wrap: anywhere;
+        border: 1px solid #206b4e;
+        border-radius: 9px;
+        background: #0d2a20;
+        color: #a7edc9;
+        font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
       }
       .muted {
-        opacity: 0.7;
+        color: var(--muted);
+      }
+      .hidden {
+        display: none !important;
+      }
+      .table-wrap {
+        overflow-x: auto;
+        border: 1px solid var(--border);
+        border-radius: 10px;
       }
       table {
         width: 100%;
+        min-width: 760px;
         border-collapse: collapse;
+        font-size: 14px;
       }
-      td,
-      th {
+      th,
+      td {
+        padding: 12px 10px;
+        border-bottom: 1px solid #273341;
         text-align: left;
-        border-bottom: 1px solid #303943;
-        padding: 10px 6px;
+        vertical-align: middle;
       }
-      .hidden {
-        display: none;
+      th {
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.02em;
       }
-      .key {
-        font-family: ui-monospace;
-        color: #8ee6b1;
+      tbody tr:last-child td {
+        border-bottom: 0;
+      }
+      tbody tr:hover {
+        background: #18212b;
+      }
+      .key-cell {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        min-width: 180px;
+      }
+      .status-dot {
+        flex: 0 0 auto;
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        background: #8793a0;
+        box-shadow: 0 0 0 3px #8793a01c;
+      }
+      .status-dot.active {
+        background: var(--success);
+        box-shadow: 0 0 0 3px #2acb8330;
+      }
+      .status-dot.revoked {
+        background: #77808b;
+        box-shadow: 0 0 0 3px #77808b22;
+      }
+      .key-label {
+        overflow-wrap: anywhere;
+        font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+        color: #a9ddff;
+      }
+      .device-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
+        max-width: 260px;
+      }
+      .device-id {
+        display: inline-block;
+        max-width: 240px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        padding: 3px 6px;
+        border: 1px solid #334355;
+        border-radius: 5px;
+        background: #0d131a;
+        color: #c4d0dc;
+        font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+        font-size: 12px;
+      }
+      .device-empty {
+        color: var(--muted);
+      }
+      .mode-select {
+        width: 132px;
+        min-height: 34px;
+        padding: 5px 8px;
+      }
+      .actions-cell {
+        width: 54px;
+        text-align: right;
+      }
+      .menu {
+        position: relative;
+        display: inline-block;
+      }
+      .menu-trigger {
+        display: inline-grid;
+        place-items: center;
+        width: 38px;
+        min-height: 38px;
+        padding: 0;
+        border-color: #405166;
+        background: #0d131a;
+        color: #b9c7d5;
+        font-size: 18px;
+        line-height: 1;
+      }
+      .menu-trigger:hover {
+        border-color: var(--accent);
+        color: #fff;
+      }
+      .menu-popover {
+        position: absolute;
+        z-index: 5;
+        top: calc(100% + 6px);
+        right: 0;
+        display: grid;
+        min-width: 142px;
+        padding: 5px;
+        border: 1px solid #405166;
+        border-radius: 9px;
+        background: #151d26;
+        box-shadow: 0 12px 28px #0008;
+      }
+      .menu-popover button {
+        min-height: 34px;
+        padding: 6px 9px;
+        border: 0;
+        border-radius: 6px;
+        background: transparent;
+        text-align: left;
+        font-size: 13px;
+      }
+      .menu-popover button:hover {
+        background: #253242;
+      }
+      .menu-popover button.danger {
+        color: #ff9b9b;
+      }
+      .table-loading {
+        padding: 24px !important;
+        color: var(--muted);
+        text-align: center;
+      }
+      .table-loading::after {
+        content: "";
+        display: inline-block;
+        width: 12px;
+        height: 12px;
+        margin-left: 8px;
+        border: 2px solid #405267;
+        border-top-color: var(--accent);
+        border-radius: 50%;
+        vertical-align: -2px;
+        animation: spin 0.7s linear infinite;
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      @media (max-width: 700px) {
+        main {
+          padding-top: 18px;
+        }
+        .topbar {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+        .topbar-actions {
+          width: 100%;
+        }
+        .topbar-actions button {
+          flex: 1;
+        }
+        .list-heading {
+          align-items: stretch;
+          flex-direction: column;
+        }
+        .list-heading input {
+          width: 100%;
+        }
+        .create-card > button {
+          flex: 1;
+        }
+        .table-wrap {
+          overflow: visible;
+          border: 0;
+        }
+        table,
+        tbody,
+        tr,
+        td {
+          display: block;
+          min-width: 0;
+          width: 100%;
+        }
+        table {
+          font-size: 14px;
+        }
+        thead {
+          display: none;
+        }
+        tbody {
+          display: grid;
+          gap: 10px;
+        }
+        tbody tr {
+          position: relative;
+          padding: 8px 10px;
+          border: 1px solid var(--border);
+          border-radius: 10px;
+          background: #10171f;
+        }
+        tbody tr:hover {
+          background: #10171f;
+        }
+        tbody td {
+          display: grid;
+          grid-template-columns: 112px minmax(0, 1fr);
+          gap: 10px;
+          align-items: center;
+          padding: 7px 0;
+          border: 0;
+        }
+        tbody td::before {
+          content: attr(data-label);
+          color: var(--muted);
+          font-size: 11px;
+          font-weight: 700;
+        }
+        tbody td:first-child {
+          padding-right: 42px;
+        }
+        .key-cell {
+          min-width: 0;
+        }
+        .device-list {
+          max-width: none;
+        }
+        .device-id {
+          max-width: 100%;
+        }
+        .mode-select {
+          width: 100%;
+        }
+        .actions-cell {
+          position: absolute;
+          top: 7px;
+          right: 8px;
+          display: block;
+          width: auto;
+          padding: 0;
+        }
+        .actions-cell::before {
+          display: none;
+        }
       }
     </style>
   </head>
   <body>
     <main>
-      <h1>Admin</h1>
-      <p class="admin-kicker">KEY MANAGEMENT</p>
-      <p id="status" class="muted">Chưa đăng nhập.</p>
-      <button id="logout" class="danger">Đăng xuất</button>
-      <section id="login" class="card"><button id="github">Đăng nhập bằng GitHub</button></section>
-      <section id="app" class="hidden">
-        <div class="card">
-          <button id="create">Tạo activation key</button>
-          <p id="created" class="key"></p>
+      <header class="topbar">
+        <div>
+          <h1>Quản lý activation key</h1>
+          <p class="eyebrow">ASSISTANT ADMIN</p>
         </div>
-        <div class="card">
-          <div class="key-list-heading">
+        <div class="topbar-actions">
+          <button id="logout" class="danger hidden" type="button">
+            Đăng xuất
+          </button>
+        </div>
+      </header>
+      <p id="status" class="muted" role="status">Chưa đăng nhập.</p>
+      <section id="login" class="card">
+        <button id="github" class="primary" type="button">
+          Đăng nhập bằng GitHub
+        </button>
+      </section>
+      <section id="app" class="hidden">
+        <div class="card create-card">
+          <button id="create" class="primary" type="button">
+            Tạo activation key
+          </button>
+          <button id="create-custom-toggle" type="button">
+            Tạo key tuỳ chỉnh
+          </button>
+          <input
+            id="custom-key"
+            class="hidden"
+            type="text"
+            placeholder="Nhập key tuỳ chỉnh"
+            autocomplete="off"
+          />
+          <button id="create-custom" class="primary hidden" type="button">
+            Tạo key
+          </button>
+          <p id="created" class="key hidden" aria-live="polite"></p>
+        </div>
+        <section class="card">
+          <div class="list-heading">
             <h2>Danh sách key</h2>
             <input
               id="key-search"
@@ -86,19 +465,26 @@
               autocomplete="off"
             />
           </div>
-          <table>
-            <thead>
-              <tr>
-                <th>Key</th>
-                <th>Trạng thái</th>
-                <th>Thiết bị</th>
-                <th>Quyền sử dụng</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody id="rows"></tbody>
-          </table>
-        </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Key</th>
+                  <th>Thiết bị</th>
+                  <th>Quyền sử dụng</th>
+                  <th aria-label="Thao tác"></th>
+                </tr>
+              </thead>
+              <tbody id="rows">
+                <tr>
+                  <td colspan="4" class="table-loading">
+                    Đang tải danh sách key
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
       </section>
     </main>
     <script src="config.js"></script>
