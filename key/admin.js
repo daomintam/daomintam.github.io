@@ -133,10 +133,7 @@
       $("created").textContent = `Key mới (chỉ hiện lần này): ${data.key}`;
       $("created").classList.remove("hidden");
       if (custom) {
-        $("custom-key").value = "";
-        $("custom-key").classList.add("hidden");
-        $("create-custom").classList.add("hidden");
-        $("create-custom-toggle").classList.remove("hidden");
+        resetCustomCreate();
       }
       await load();
       setStatus("Đã tạo key.");
@@ -145,6 +142,14 @@
     } finally {
       button.disabled = false;
     }
+  }
+
+  function resetCustomCreate() {
+    $("custom-key").value = "";
+    $("custom-key").classList.add("hidden");
+    $("create-custom").classList.add("hidden");
+    $("create-custom-cancel").classList.add("hidden");
+    $("create-custom-toggle").classList.remove("hidden");
   }
 
   async function updateMode(id, mode, select) {
@@ -193,9 +198,21 @@
     document.querySelectorAll(".menu-popover:not(.hidden)").forEach((menu) => {
       if (menu !== except) {
         menu.classList.add("hidden");
+        menu.classList.remove("open-up");
         menu.previousElementSibling?.setAttribute("aria-expanded", "false");
       }
     });
+  }
+
+  function positionMenu(trigger, menu) {
+    menu.classList.remove("open-up");
+    const triggerRect = trigger.getBoundingClientRect();
+    const menuRect = menu.getBoundingClientRect();
+    const gap = 8;
+    const opensBelow =
+      window.innerHeight - triggerRect.bottom >= menuRect.height + gap;
+    const hasRoomAbove = triggerRect.top >= menuRect.height + gap;
+    if (!opensBelow && hasRoomAbove) menu.classList.add("open-up");
   }
 
   function show() {
@@ -222,8 +239,13 @@
   $("create-custom-toggle").onclick = () => {
     $("custom-key").classList.remove("hidden");
     $("create-custom").classList.remove("hidden");
+    $("create-custom-cancel").classList.remove("hidden");
     $("create-custom-toggle").classList.add("hidden");
     $("custom-key").focus();
+  };
+  $("create-custom-cancel").onclick = () => {
+    resetCustomCreate();
+    setStatus("Đã huỷ tạo key tuỳ chỉnh.");
   };
   $("create-custom").onclick = () => createKey(true);
   $("key-search").oninput = filterRows;
@@ -238,6 +260,7 @@
       const open = !menu.classList.contains("hidden");
       closeMenus(open ? null : menu);
       menu.classList.toggle("hidden", open);
+      if (!open) positionMenu(trigger, menu);
       trigger.setAttribute("aria-expanded", String(!open));
       return;
     }

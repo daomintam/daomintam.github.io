@@ -279,6 +279,10 @@
         background: #151d26;
         box-shadow: 0 12px 28px #0008;
       }
+      .menu-popover.open-up {
+        top: auto;
+        bottom: calc(100% + 6px);
+      }
       .menu-popover button {
         min-height: 34px;
         padding: 6px 9px;
@@ -451,6 +455,9 @@
           />
           <button id="create-custom" class="primary hidden" type="button">
             Tạo key
+          </button>
+          <button id="create-custom-cancel" class="hidden" type="button">
+            Huỷ
           </button>
           <p id="created" class="key hidden" aria-live="polite"></p>
         </div>
