@@ -256,15 +256,16 @@
         width: 38px;
         min-height: 38px;
         padding: 0;
-        border-color: #405166;
+        border-color: #fff;
         background: #0d131a;
-        color: #b9c7d5;
+        color: #fff;
         font-size: 18px;
         line-height: 1;
       }
       .menu-trigger:hover {
-        border-color: var(--accent);
+        border-color: #fff;
         color: #fff;
+        background: #18212b;
       }
       .menu-popover {
         position: absolute;
@@ -297,6 +298,89 @@
       }
       .menu-popover button.danger {
         color: #ff9b9b;
+      }
+      @media (prefers-color-scheme: light) {
+        :root {
+          color-scheme: light;
+          background: #f4f7fa;
+          color: #17202a;
+          --surface: #fff;
+          --border: #c7d1dc;
+          --muted: #5d6a78;
+          --accent: #0b72b9;
+          --success: #168653;
+        }
+        body {
+          background: #f4f7fa;
+        }
+        button,
+        input,
+        select {
+          border-color: #aebbc8;
+          background: #fff;
+          color: #17202a;
+        }
+        button.primary {
+          border-color: #0b72b9;
+          background: #0b72b9;
+          color: #fff;
+        }
+        button.danger {
+          border-color: #b13c54;
+          background: #a32f48;
+          color: #fff;
+        }
+        .eyebrow {
+          color: #075f9e;
+        }
+        .card {
+          box-shadow: 0 12px 32px #18212b14;
+        }
+        .key {
+          border-color: #39a36f;
+          background: #e9f8f0;
+          color: #12653e;
+        }
+        th,
+        td {
+          border-bottom-color: #dce3ea;
+        }
+        tbody tr:hover {
+          background: #f0f4f8;
+        }
+        .key-label {
+          color: #075f9e;
+        }
+        .device-id {
+          border-color: #c2ceda;
+          background: #f4f7fa;
+          color: #314150;
+        }
+        .menu-trigger {
+          border-color: #000;
+          background: #fff;
+          color: #000;
+        }
+        .menu-trigger:hover {
+          border-color: #000;
+          background: #f0f2f5;
+          color: #000;
+        }
+        .menu-popover {
+          border-color: #aebbc8;
+          background: #fff;
+          box-shadow: 0 12px 28px #18212b24;
+        }
+        .menu-popover button:hover {
+          background: #edf2f6;
+        }
+        .menu-popover button.danger {
+          color: #a32f48;
+        }
+        .table-loading::after {
+          border-color: #c2ceda;
+          border-top-color: #0b72b9;
+        }
       }
       .table-loading {
         padding: 24px !important;
